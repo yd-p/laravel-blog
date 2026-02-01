@@ -2,7 +2,7 @@
 
 一款基于 Laravel 构建的现代化建站系统，支持插件扩展、模板定制、可视化管理
 
-![Laravel CMS](https://img.shields.io/badge/Laravel-12.x-FF2D20.svg?style=flat-square) ![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4.svg?style=flat-square) ![Filament](https://img.shields.io/badge/Filament-5.x-6574cd.svg?style=flat-square) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.x-06B6D4.svg?style=flat-square) ![Vite](https://img.shields.io/badge/Vite-7.x-646CFF.svg?style=flat-square) ![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)
+![Laravel CMS](https://img.shields.io/badge/Laravel-12.x-FF2D20.svg?style=flat-square) ![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4.svg?style=flat-square) ![Filament](https://img.shields.io/badge/Filament-5.x-6574cd.svg?style=flat-square) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.x-06B6D4.svg?style=flat-square) ![Vite](https://img.shields.io/badge/Vite-7.x-646CFF.svg?style=flat-square) !
 
 
 ## 🌟 核心特性

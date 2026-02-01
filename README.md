@@ -1,59 +1,32 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel CMS - 轻量级建站系统（对标 WordPress）
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+一款基于 Laravel 构建的现代化建站系统，支持插件扩展、模板定制、可视化管理
 
-## About Laravel
+![Laravel CMS](https://img.shields.io/badge/Laravel-12.x-FF2D20.svg?style=flat-square) ![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4.svg?style=flat-square) ![Filament](https://img.shields.io/badge/Filament-5.x-6574cd.svg?style=flat-square) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.x-06B6D4.svg?style=flat-square) ![Vite](https://img.shields.io/badge/Vite-7.x-646CFF.svg?style=flat-square) ![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🌟 核心特性
+- 📦 **插件机制**：支持插件的安装、启用、禁用、卸载，低耦合扩展系统功能
+- 🎨 **模板系统**：自定义主题模板，支持模板预览、切换、一键部署
+- 🚀 **可视化管理**：基于 Filament 5 打造的后台管理面板，操作简单直观
+- ⚡ **高性能**：基于 Laravel 12 核心 + Vite 7 前端构建，兼顾性能和开发体验
+- 🎨 **现代化样式**：集成 TailwindCSS 4，快速定制响应式界面
+- 🧪 **完善测试**：集成 Pest PHP 测试框架，保障代码稳定性
+- 🐳 **容器化部署**：支持 Laravel Sail 一键启动开发环境
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🛠 技术栈（基于 composer.json + package.json 解析）
+| 分类       | 技术/组件                | 版本/作用                                                                 |
+|------------|--------------------------|--------------------------------------------------------------------------|
+| 后端核心   | Laravel                  | ^12.0 - 核心框架，提供路由、ORM、中间件等基础能力                        |
+| 后端核心   | Filament                 | ^5.0 - 后台管理面板，快速构建可视化管
+| 前端构建   | Vite                     | ^7.0.7 - 前端构建工具，替代 Webpack，编译速度更快                        |
+| 样式框架   | TailwindCSS              | ^4.0.0 - 原子化 CSS 框架，快速定制界
 
-## Learning Laravel
+## 🚀 快速开始
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 前置条件
+- PHP >= 8.2
+- Composer
+- MySQL 8.0+（开发环境）
+- Node.js >= 18.x（前端资源编译）
+- NPM（前端包管理）

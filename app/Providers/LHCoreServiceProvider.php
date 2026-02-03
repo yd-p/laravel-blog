@@ -25,8 +25,6 @@ class LHCoreServiceProvider extends ServiceProvider
         }
         app(PluginsManager::class)->loadPlugins($loader, $this->app);
 
-        $this->app->register(RouteServiceProvider::class);
-
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'lh');
     }
 }

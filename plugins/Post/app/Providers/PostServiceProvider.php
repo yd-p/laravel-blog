@@ -12,7 +12,7 @@ class PostServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->loadRoutesFrom(__DIR__ . '/../../routes/web.php');
+        $this->app->register(RouteServiceProvider::class);
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', strtolower('Post'));
     }
 }

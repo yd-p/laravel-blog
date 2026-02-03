@@ -1,0 +1,32 @@
+{
+    "name": "yd/post-plugin",
+    "description": "Post plugin",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Plugins\\Post\\": "app/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Plugins\\Post\\Providers\\PostServiceProvider"
+            ]
+        },
+        "hooks": {
+            "plugin.enabling": "Plugins\\Post\\Hooks\\PluginHooks@onEnabling",
+            "plugin.enabled": "Plugins\\Post\\Hooks\\PluginHooks@onEnabled",
+            "plugin.disabling": "Plugins\\Post\\Hooks\\PluginHooks@onDisabling",
+            "plugin.disabled": "Plugins\\Post\\Hooks\\PluginHooks@onDisabled",
+            "plugin.deleting": "Plugins\\Post\\Hooks\\PluginHooks@onDeleting",
+            "plugin.deleted": "Plugins\\Post\\Hooks\\PluginHooks@onDeleted",
+            "plugin.installed": "Plugins\\Post\\Hooks\\PluginHooks@onInstalled",
+            "plugin.uninstalling": "Plugins\\Post\\Hooks\\PluginHooks@onUninstalling",
+            "plugin.uninstalled": "Plugins\\Post\\Hooks\\PluginHooks@onUninstalled"
+        }
+    },
+    "require": {
+        "w7corp/easywechat": "^6.17",
+        "overtrue/socialite": "^4.11"
+    }
+}

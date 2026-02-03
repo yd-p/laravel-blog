@@ -1,4 +1,4 @@
-# Laravel CMS - 轻量级建站系统（对标 WordPress）
+# Laravel CMS - 轻量级建站系统
 
 一款基于 Laravel 构建的现代化建站系统，支持插件扩展、模板定制、可视化管理
 

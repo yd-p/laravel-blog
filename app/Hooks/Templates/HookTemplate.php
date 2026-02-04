@@ -3,16 +3,30 @@
 namespace App\Hooks\Templates;
 
 use App\Hooks\AbstractHook;
+use App\Hooks\Attributes\Hook;
+use App\Hooks\Attributes\Priority;
+use App\Hooks\Attributes\Group;
 
 /**
  * 钩子模板类
  * 
  * 复制此模板到 app/Hooks/Custom/ 目录下，并根据需要修改
  * 
+ * 使用 PHP 8.2 Attribute 语法（推荐）：
+ * #[Hook(name: 'your.hook.name', priority: 10, group: 'your_group')]
+ * 
+ * 或者使用传统注释语法（向后兼容）：
  * @hook your.hook.name
  * @priority 10
  * @group your_group
  */
+#[Hook(
+    name: 'your.hook.name',
+    priority: 10,
+    group: 'your_group',
+    description: '钩子描述',
+    enabled: true
+)]
 class HookTemplate extends AbstractHook
 {
     protected string $description = '钩子描述';

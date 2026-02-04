@@ -191,6 +191,89 @@ class UserCreatedHook extends AbstractHook
 }
 ```
 
+### 视图钩子
+
+```php
+// 在控制器中使用视图钩子
+use App\Hooks\View\ViewHookManager;
+
+class DashboardController extends Controller
+{
+    public function index()
+    {
+        $data = ['stats' => $this->getStats()];
+        
+        // 执行视图渲染前钩子
+        $viewHookManager = app(ViewHookManager::class);
+        $beforeResults = $viewHookManager->executeBeforeRender('dashboard.index', $data);
+        
+        // 合并钩子处理的数据
+        foreach ($beforeResults as $results) {
+            foreach ($results as $result) {
+                if (isset($result['processed_data'])) {
+                    $data = array_merge($data, $result['processed_data']);
+                }
+            }
+        }
+        
+        return view('dashboard.index', $data);
+    }
+}
+```
+
+然后创建视图钩子类：
+```php
+/**
+ * @hook view.dashboard.before_render
+ * @priority 10
+ * @group view
+ */
+class DashboardViewHook extends ViewHookTemplate
+{
+    protected function handleBeforeRender(string $viewName, array $data, array $options): array
+    {
+        // TODO: 实现仪表板视图前置处理逻辑
+        // 例如：添加导航菜单、注入用户权限、加载小组件数据等
+        
+        return [
+            'processed_data' => array_merge($data, [
+                'navigation_menu' => $this->getNavigationMenu(),
+                'user_permissions' => $this->getUserPermissions(),
+                'dashboard_widgets' => $this->getDashboardWidgets()
+            ])
+        ];
+    }
+}
+```
+
+在Blade模板中使用视图钩子指令：
+```blade
+{{-- resources/views/dashboard/index.blade.php --}}
+@extends('layouts.app')
+
+@section('content')
+    {{-- 执行渲染前钩子 --}}
+    @hookBefore('dashboard.widgets')
+    
+    <div class="dashboard">
+        <h1>仪表板</h1>
+        
+        {{-- 注入钩子数据 --}}
+        @hookData('dashboard.stats', ['refresh' => true])
+        
+        {{-- 条件钩子 --}}
+        @ifhook('feature.advanced_dashboard')
+            <div class="advanced-widgets">
+                <!-- 高级功能组件 -->
+            </div>
+        @endifhook
+    </div>
+    
+    {{-- 执行渲染后钩子 --}}
+    @hookAfter('dashboard.widgets')
+@endsection
+```
+
 ## 🎯 进阶用法（框架功能演示）
 
 ### 条件执行
@@ -300,9 +383,12 @@ php artisan hook clear-cache
 ## 📚 更多资源
 
 - [完整文档](README.md)
+- [用户实现指南](USER_GUIDE.md)
+- [视图钩子指南](VIEW_HOOKS_GUIDE.md)
+- [模板文档](Templates/README.md)
 - [API参考](HookManager.php)
-- [示例代码](Examples/HookUsageExample.php)
-- [测试用例](Tests/HookSystemTest.php)
+- [示例代码](Examples/)
+- [测试用例](Tests/)
 
 ## 🤔 常见问题
 
@@ -358,6 +444,8 @@ A: **框架不提供任何业务逻辑！** 所有业务逻辑都需要用户自
 - **event** - 事件驱动模板（事件系统集成）
 - **cache** - 缓存感知模板（性能优化）
 - **validation** - 验证模板（数据验证）
+- **view** - 视图处理模板（视图生命周期管理）
+- **view-composer** - 视图组合器模板（视图数据共享）
 
 ### 快速创建示例
 
@@ -376,6 +464,12 @@ php artisan make:hook DataImporter --template=batch --group=import
 
 # 缓存计算钩子
 php artisan make:hook Calculator --template=cache --group=compute
+
+# 视图处理钩子
+php artisan make:hook ViewProcessor --template=view --group=view
+
+# 视图组合器钩子
+php artisan make:hook MenuComposer --template=view-composer --group=view
 ```
 
 查看所有模板详情：[模板文档](app/Hooks/Templates/README.md)
@@ -391,6 +485,8 @@ php artisan make:hook Calculator --template=cache --group=compute
 | 复杂业务规则 | conditional | `make:hook BusinessRule --template=conditional` |
 | 性能敏感操作 | cache | `make:hook Calculator --template=cache` |
 | 事件驱动架构 | event | `make:hook EventHandler --template=event` |
+| 视图数据处理 | view | `make:hook ViewProcessor --template=view` |
+| 视图组合器 | view-composer | `make:hook MenuComposer --template=view-composer` |
 
 ## 🎨 视图钩子特别说明
 

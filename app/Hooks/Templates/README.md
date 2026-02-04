@@ -297,6 +297,7 @@ class CacheValidationHook extends CacheAwareHookTemplate
 - [钩子系统文档](../README.md)
 - [快速开始指南](../QUICKSTART.md)
 - [用户实现指南](../USER_GUIDE.md)
+- [视图钩子指南](../VIEW_HOOKS_GUIDE.md)
 - [测试用例](../Tests/)
 
 ---

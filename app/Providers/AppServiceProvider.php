@@ -11,7 +11,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // 注册钩子服务提供者
+        $this->app->register(\App\Hooks\HookServiceProvider::class);
     }
 
     /**
@@ -19,6 +20,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // 注册钩子命令
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \App\Console\Commands\HookCommand::class,
+                \App\Console\Commands\MakeHookCommand::class,
+            ]);
+        }
     }
 }

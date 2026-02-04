@@ -1,0 +1,43 @@
+# 用户自定义钩子目录
+
+在此目录下创建你的自定义钩子类。
+
+## 快速开始
+
+1. 复制 `app/Hooks/Templates/HookTemplate.php` 到此目录
+2. 重命名文件和类名
+3. 修改注解中的钩子名称、优先级和分组
+4. 实现 `handle()` 方法中的业务逻辑
+5. 运行 `php artisan hook discover` 自动注册钩子
+
+## 示例
+
+```php
+<?php
+
+namespace App\Hooks\Custom;
+
+use App\Hooks\AbstractHook;
+
+/**
+ * @hook my.custom.hook
+ * @priority 10
+ * @group custom
+ */
+class MyCustomHook extends AbstractHook
+{
+    public function handle(...$args)
+    {
+        // 你的业务逻辑
+        return ['status' => 'success'];
+    }
+}
+```
+
+## 注意事项
+
+- 所有钩子类都应该在 `App\Hooks\Custom` 命名空间下
+- 使用注解 `@hook` 指定钩子名称
+- 使用注解 `@priority` 指定优先级（可选，默认10）
+- 使用注解 `@group` 指定分组（可选）
+- 钩子类会被自动发现和注册

@@ -22,3 +22,7 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Development scripts and tools
+/dev/*
+!/dev/.gitkeep

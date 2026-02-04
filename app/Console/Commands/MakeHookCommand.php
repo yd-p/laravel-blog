@@ -362,6 +362,8 @@ class MakeHookCommand extends Command
   --priority=PRIORITY   优先级 (默认: 10)
   --group=GROUP        分组 (默认: custom)
   --force              覆盖现有文件
+  --attribute          强制使用 PHP 8.2 Attribute 语法
+  --legacy             强制使用传统注释语法
 
 可用模板:
   basic        基础模板 (完整功能)
@@ -375,13 +377,43 @@ class MakeHookCommand extends Command
   view         视图处理模板
   view-composer 视图组合器模板
 
+注解语法:
+  默认情况下，如果 PHP 版本 >= 8.2，将使用 Attribute 语法
+  如果 PHP 版本 < 8.2，将使用传统注释语法
+  可以使用 --attribute 或 --legacy 选项强制指定语法
+
 示例:
+  # 基础用法
   php artisan make:hook UserLogin
   php artisan make:hook OrderProcess --template=async
+  
+  # 指定钩子信息
   php artisan make:hook DataValidator --template=validation --group=validation
   php artisan make:hook BatchImport --template=batch --hook=data.import.batch
+  
+  # 视图钩子
   php artisan make:hook ViewProcessor --template=view --group=view
   php artisan make:hook MenuComposer --template=view-composer --group=view
+  
+  # 强制使用 Attribute 语法 (PHP 8.2+)
+  php artisan make:hook ModernHook --attribute
+  
+  # 强制使用传统注释语法
+  php artisan make:hook LegacyHook --legacy
+
+PHP 8.2 Attribute 示例:
+  #[Hook(name: 'user.login', priority: 10, group: 'auth')]
+  #[Middleware(class: 'AuthMiddleware')]
+  #[Condition(type: 'environment', value: 'production')]
+  class UserLoginHook extends AbstractHook { ... }
+
+传统注释示例:
+  /**
+   * @hook user.login
+   * @priority 10
+   * @group auth
+   */
+  class UserLoginHook extends AbstractHook { ... }
 
 HELP;
     }

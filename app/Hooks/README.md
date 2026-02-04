@@ -308,6 +308,278 @@ php artisan hook test --hook=user.login
 php artisan hook clear-cache
 ```
 
+## 🎨 视图钩子系统
+
+视图钩子系统是钩子框架的重要组成部分，专门处理视图相关的钩子逻辑。
+
+### 视图钩子管理器
+
+使用 `ViewHookManager` 来管理视图相关的钩子：
+
+```php
+use App\Hooks\View\ViewHookManager;
+
+// 获取视图钩子管理器
+$viewHookManager = app(ViewHookManager::class);
+```
+
+### 注册视图钩子
+
+#### 1. 视图渲染前钩子
+
+```php
+// 为管理员视图注册渲染前钩子
+$viewHookManager->beforeRender('admin.*', function ($viewName, $data) {
+    // TODO: 实现管理员视图前置处理逻辑
+    return [
+        'processed_data' => array_merge($data, [
+            'admin_menu' => $this->getAdminMenu(),
+            'admin_notifications' => $this->getAdminNotifications()
+        ])
+    ];
+}, 10);
+
+// 为特定视图注册钩子
+$viewHookManager->beforeRender('dashboard.index', function ($viewName, $data) {
+    // TODO: 实现仪表板特定处理逻辑
+    return ['dashboard_widgets' => $this->getDashboardWidgets()];
+});
+```
+
+#### 2. 视图渲染后钩子
+
+```php
+// 注册渲染后钩子
+$viewHookManager->afterRender('admin.*', function ($viewName, $data, $options) {
+    $content = $options['rendered_content'];
+    
+    // TODO: 实现内容后处理逻辑
+    $processedContent = $this->addAdminFooter($content);
+    
+    return ['processed_content' => $processedContent];
+});
+```
+
+#### 3. 数据注入钩子
+
+```php
+// 全局数据注入
+$viewHookManager->injectData('*', function ($viewName, $data) {
+    // TODO: 实现全局数据注入逻辑
+    return [
+        'injected_data' => [
+            'app_name' => config('app.name'),
+            'current_user' => auth()->user(),
+            'system_time' => now()
+        ]
+    ];
+});
+
+// 用户视图数据注入
+$viewHookManager->injectData('user.*', function ($viewName, $data) {
+    // TODO: 实现用户视图数据注入逻辑
+    return [
+        'injected_data' => [
+            'user_permissions' => $this->getUserPermissions(),
+            'user_preferences' => $this->getUserPreferences()
+        ]
+    ];
+});
+```
+
+#### 4. 主题切换钩子
+
+```php
+$viewHookManager->switchTheme('*', function ($viewName, $data, $options) {
+    // TODO: 实现主题切换逻辑
+    $theme = $this->determineTheme($options);
+    
+    return [
+        'theme_switched' => true,
+        'active_theme' => $theme,
+        'theme_assets' => $this->getThemeAssets($theme)
+    ];
+});
+```
+
+#### 5. 模板修改钩子
+
+```php
+$viewHookManager->modifyTemplate('*', function ($viewName, $data, $options) {
+    // TODO: 实现模板修改逻辑
+    $modifications = [];
+    
+    // 移动端适配
+    if ($this->isMobileDevice()) {
+        $modifications['mobile_view'] = $this->getMobileView($viewName);
+    }
+    
+    return ['modifications' => $modifications];
+});
+```
+
+### 批量注册视图钩子
+
+```php
+$hooks = [
+    [
+        'type' => 'before_render',
+        'pattern' => 'dashboard.*',
+        'callback' => function ($viewName, $data) {
+            // TODO: 实现仪表板前置处理
+            return ['dashboard_data' => $this->getDashboardData()];
+        },
+        'priority' => 5
+    ],
+    [
+        'type' => 'inject_data',
+        'pattern' => 'reports.*',
+        'callback' => function ($viewName, $data) {
+            // TODO: 实现报表数据注入
+            return ['report_config' => $this->getReportConfig()];
+        },
+        'priority' => 10
+    ]
+];
+
+$registeredIds = $viewHookManager->registerBatch($hooks);
+```
+
+### 执行视图钩子
+
+```php
+// 执行渲染前钩子
+$beforeResults = $viewHookManager->executeBeforeRender('admin.dashboard', $data);
+
+// 执行渲染后钩子
+$afterResults = $viewHookManager->executeAfterRender('admin.dashboard', $content, $data);
+
+// 执行数据注入钩子
+$injectionResults = $viewHookManager->executeDataInjection('admin.dashboard', $data);
+```
+
+### 视图组合器钩子
+
+使用视图组合器钩子模板：
+
+```php
+use App\Hooks\Templates\ViewComposerHookTemplate;
+
+// 创建自定义视图组合器钩子
+class NavigationComposerHook extends ViewComposerHookTemplate
+{
+    protected function getComposerDataForView($view, array $data, array $options): array
+    {
+        // TODO: 实现导航组合器逻辑
+        return [
+            'navigation_menu' => $this->getNavigationMenu(),
+            'user_menu' => $this->getUserMenu()
+        ];
+    }
+}
+
+// 注册组合器钩子
+Hook::register('view.composer.navigation', NavigationComposerHook::class);
+```
+
+### Blade指令
+
+视图钩子系统提供了便捷的Blade指令：
+
+#### 1. @hook 指令
+
+```blade
+{{-- 在模板中执行钩子 --}}
+@hook('view.custom.widget', ['widget_id' => 1])
+
+{{-- 带参数的钩子执行 --}}
+@hook('view.user.profile', $user, ['show_private' => true])
+```
+
+#### 2. @hookData 指令
+
+```blade
+{{-- 注入钩子数据 --}}
+@hookData('user.dashboard', ['user_id' => $user->id])
+```
+
+#### 3. @hookBefore 和 @hookAfter 指令
+
+```blade
+{{-- 渲染前钩子 --}}
+@hookBefore('dashboard.widgets')
+
+<div class="dashboard-content">
+    <!-- 仪表板内容 -->
+</div>
+
+{{-- 渲染后钩子 --}}
+@hookAfter('dashboard.widgets')
+```
+
+#### 4. @ifHook 条件指令
+
+```blade
+@ifhook('feature.advanced_dashboard')
+    <div class="advanced-widgets">
+        <!-- 高级功能组件 -->
+    </div>
+@endifhook
+```
+
+### 视图宏
+
+视图钩子系统还提供了视图宏：
+
+```php
+// 在控制器中使用视图宏
+return view('dashboard.index')
+    ->withHook('dashboard.data', ['user_id' => $user->id])
+    ->withTheme('admin')
+    ->withLayout('admin.layout');
+```
+
+### 视图钩子配置
+
+在 `config/hooks.php` 中配置视图钩子：
+
+```php
+'view_hooks' => [
+    'auto_register_composers' => true,
+    'cache_view_data' => false,
+    'track_rendering_performance' => true,
+    'global_data_injection' => true,
+],
+```
+
+### 视图钩子统计
+
+```php
+// 获取视图钩子统计信息
+$stats = $viewHookManager->getViewHookStats();
+
+echo "总视图钩子数: {$stats['total_view_hooks']}\n";
+echo "按类型统计:\n";
+foreach ($stats['by_type'] as $type => $count) {
+    echo "  {$type}: {$count}\n";
+}
+```
+
+### 视图钩子最佳实践
+
+1. **合理使用钩子模式**: 使用通配符模式（如 `admin.*`）来批量处理相关视图
+2. **数据缓存**: 对于重复计算的数据，使用缓存提高性能
+3. **延迟加载**: 对于非关键数据，使用延迟加载避免影响页面渲染速度
+4. **错误处理**: 在钩子中添加适当的错误处理，避免影响视图渲染
+5. **性能监控**: 使用性能跟踪功能监控钩子执行时间
+
+### 视图钩子示例
+
+完整的视图钩子使用示例请参考：
+- `app/Hooks/Templates/ViewHookTemplate.php` - 视图钩子模板
+- `app/Hooks/Templates/ViewComposerHookTemplate.php` - 视图组合器模板
+- `app/Hooks/Examples/ViewHookUsageExample.php` - 使用示例
+
 ## 🔍 内置钩子点定义
 
 系统预定义了以下钩子点（**仅定义钩子点，不包含业务逻辑**）：
@@ -334,6 +606,18 @@ php artisan hook clear-cache
 - `model.deleted` - 模型删除后
 - `model.saving` - 模型保存前
 - `model.saved` - 模型保存后
+
+### 视图钩子点
+- `view.before_render` - 视图渲染前（通用）
+- `view.after_render` - 视图渲染后（通用）
+- `view.composing` - 视图组合时
+- `view.creating` - 视图创建时
+- `view.inject_data` - 数据注入时
+- `view.modify_template` - 模板修改时
+- `view.switch_theme` - 主题切换时
+- `view.before_render.{pattern}` - 特定模式视图渲染前
+- `view.after_render.{pattern}` - 特定模式视图渲染后
+- `view.inject_data.{pattern}` - 特定模式数据注入
 
 ### 插件钩子点
 - `plugin.installing` - 插件安装前

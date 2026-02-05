@@ -1,0 +1,33 @@
+{
+	"name": "Blog",
+	"version": "1.0",
+    "author": "YD",
+    "config": {
+        "primary_color": {
+            "type": "color",
+            "label": "主色",
+            "default": "#3490dc"
+        },
+        "secondary_color": {
+            "type": "color",
+            "label": "副色",
+            "default": "#ffed4a"
+        },
+        "dark_mode": {
+            "type": "toggle",
+            "label": "启用暗黑模式",
+            "default": false
+        },
+        "test": {
+            "type": "select",
+            "label": "启用暗黑模式",
+            "options": {
+                "a": "1"
+            }
+        },
+        "test1": {
+            "type": "text",
+            "label": "测试"
+        }
+    }
+}

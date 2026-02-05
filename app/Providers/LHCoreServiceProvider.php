@@ -6,6 +6,7 @@ namespace App\Providers;
 use Composer\Autoload\ClassLoader;
 use Illuminate\Support\ServiceProvider;
 use App\Plugins\PluginsManager;
+use App\Plugins\ThemeManager;
 
 class LHCoreServiceProvider extends ServiceProvider
 {
@@ -24,7 +25,7 @@ class LHCoreServiceProvider extends ServiceProvider
             throw new \RuntimeException('Composer autoloader is not a ClassLoader instance.');
         }
         app(PluginsManager::class)->loadPlugins($loader, $this->app);
-
+        (new ThemeManager())->boot();
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'lh');
     }
 }

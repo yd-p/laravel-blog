@@ -25,7 +25,7 @@ php artisan hook discover
 #### 方法1：使用生成器命令（推荐）
 
 ```bash
-# 创建基础钩子
+# 创建基础钩子（自动选择注解语法）
 php artisan make:hook MyFirstHook
 
 # 创建异步处理钩子
@@ -33,6 +33,12 @@ php artisan make:hook DataProcessor --template=async
 
 # 创建验证钩子
 php artisan make:hook UserValidator --template=validation --group=validation
+
+# 强制使用 PHP 8.2 Attribute 语法
+php artisan make:hook ModernHook --attribute
+
+# 强制使用传统注释语法
+php artisan make:hook LegacyHook --legacy
 
 # 查看所有可用模板
 php artisan make:hook --help
@@ -45,6 +51,47 @@ php artisan make:hook --help
 cp app/Hooks/Templates/HookTemplate.php app/Hooks/Custom/MyFirstHook.php
 ```
 
+#### PHP 8.2 Attribute 语法（推荐）
+
+```php
+<?php
+
+namespace App\Hooks\Custom;
+
+use App\Hooks\AbstractHook;
+use App\Hooks\Attributes\Hook;
+
+/**
+ * 使用 PHP 8.2 Attribute 语法
+ */
+#[Hook(
+    name: 'my.first.hook',
+    priority: 10,
+    group: 'demo',
+    description: '我的第一个钩子'
+)]
+class MyFirstHook extends AbstractHook
+{
+    protected string $description = '我的第一个钩子';
+
+    public function handle(...$args)
+    {
+        [$message] = $args;
+        
+        // TODO: 在这里实现你的业务逻辑
+        logger()->info("钩子执行: {$message}");
+        
+        return [
+            'status' => 'success',
+            'message' => "处理了消息: {$message}",
+            'timestamp' => now()
+        ];
+    }
+}
+```
+
+#### 传统注释语法（向后兼容）
+
 然后编辑 `app/Hooks/Custom/MyFirstHook.php`：
 
 ```php
@@ -55,6 +102,8 @@ namespace App\Hooks\Custom;
 use App\Hooks\AbstractHook;
 
 /**
+ * 使用传统注释语法
+ * 
  * @hook my.first.hook
  * @priority 10
  * @group demo

@@ -3,6 +3,9 @@
 namespace App\Hooks\Templates;
 
 use App\Hooks\AbstractHook;
+use App\Hooks\Attributes\Hook;
+use App\Hooks\Attributes\Group;
+use App\Hooks\Attributes\Condition;
 use Illuminate\Support\Facades\View;
 use Illuminate\View\View as ViewInstance;
 
@@ -12,10 +15,21 @@ use Illuminate\View\View as ViewInstance;
  * 专门用于视图相关的钩子处理
  * 支持视图渲染前后的数据处理、模板修改等
  * 
+ * 使用 PHP 8.2 Attribute 语法（推荐）：
+ * #[Hook(name: 'view.hook.name', priority: 10, group: 'view')]
+ * 
+ * 或者使用传统注释语法（向后兼容）：
  * @hook view.hook.name
  * @priority 10
  * @group view
  */
+#[Hook(
+    name: 'view.hook.name',
+    priority: 10,
+    group: 'view',
+    description: '视图处理钩子模板'
+)]
+#[Condition(type: 'auth', value: true)]
 class ViewHookTemplate extends AbstractHook
 {
     protected string $description = '视图处理钩子模板';

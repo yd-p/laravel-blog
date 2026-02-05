@@ -124,6 +124,54 @@ Hook::registerBatch([
 ], 'auth');
 ```
 
+### 使用 PHP 8.2 Attribute（推荐）
+
+```php
+use App\Hooks\AbstractHook;
+use App\Hooks\Attributes\Hook;
+use App\Hooks\Attributes\Middleware;
+use App\Hooks\Attributes\Condition;
+
+#[Hook(
+    name: 'user.login.after',
+    priority: 10,
+    group: 'auth',
+    description: '用户登录后处理'
+)]
+#[Middleware(class: 'App\Hooks\Middleware\AuthMiddleware')]
+#[Condition(type: 'environment', value: 'production')]
+class UserLoginHook extends AbstractHook
+{
+    public function handle(...$args)
+    {
+        [$user, $ip] = $args;
+        
+        // TODO: 实现你的业务逻辑
+        logger()->info("用户登录", ['user_id' => $user->id, 'ip' => $ip]);
+        
+        return ['processed' => true];
+    }
+}
+```
+
+### 使用传统注释（向后兼容）
+
+```php
+/**
+ * @hook user.login.after
+ * @priority 10
+ * @group auth
+ */
+class UserLoginHook extends AbstractHook
+{
+    public function handle(...$args)
+    {
+        // 业务逻辑实现
+        return ['processed' => true];
+    }
+}
+```
+
 ### 执行钩子
 
 ```php

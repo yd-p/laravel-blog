@@ -14,12 +14,12 @@ class MakeHookCommand extends Command
     /**
      * 命令签名
      */
-    protected $signature = 'make:hook {name} {--template=basic} {--hook=} {--priority=10} {--group=} {--force}';
+    protected $signature = 'make:hook {name} {--template=basic} {--hook=} {--priority=10} {--group=} {--force} {--attribute} {--legacy}';
 
     /**
      * 命令描述
      */
-    protected $description = '创建一个新的钩子类';
+    protected $description = '创建一个新的钩子类（支持 PHP 8.2 Attribute 和传统注释）';
 
     protected Filesystem $files;
 
@@ -155,6 +155,10 @@ class MakeHookCommand extends Command
         $hookName = $this->option('hook') ?: $this->generateHookName($className);
         $priority = $this->option('priority') ?: 10;
         $group = $this->option('group') ?: 'custom';
+        $description = $this->generateDescription($className);
+
+        // 检查是否使用 Attribute 语法
+        $useAttribute = $this->shouldUseAttribute();
 
         $replacements = [
             'namespace App\Hooks\Templates;' => 'namespace App\Hooks\Custom;',
@@ -167,7 +171,7 @@ class MakeHookCommand extends Command
                     'class HookTemplate' => "class {$className}",
                     'your.hook.name' => $hookName,
                     'your_group' => $group,
-                    '钩子描述' => $this->generateDescription($className),
+                    '钩子描述' => $description,
                 ]);
                 break;
 
@@ -176,7 +180,7 @@ class MakeHookCommand extends Command
                     'class SimpleHookTemplate' => "class {$className}",
                     'simple.hook.name' => $hookName,
                     'simple' => $group,
-                    '简单钩子模板' => $this->generateDescription($className),
+                    '简单钩子模板' => $description,
                 ]);
                 break;
 
@@ -185,7 +189,7 @@ class MakeHookCommand extends Command
                     'class AsyncHookTemplate' => "class {$className}",
                     'async.hook.name' => $hookName,
                     'async' => $group,
-                    '异步处理钩子模板' => $this->generateDescription($className),
+                    '异步处理钩子模板' => $description,
                 ]);
                 break;
 
@@ -194,7 +198,7 @@ class MakeHookCommand extends Command
                     'class ConditionalHookTemplate' => "class {$className}",
                     'conditional.hook.name' => $hookName,
                     'conditional' => $group,
-                    '条件处理钩子模板' => $this->generateDescription($className),
+                    '条件处理钩子模板' => $description,
                 ]);
                 break;
 
@@ -203,7 +207,7 @@ class MakeHookCommand extends Command
                     'class BatchProcessingHookTemplate' => "class {$className}",
                     'batch.processing.hook' => $hookName,
                     'batch' => $group,
-                    '批量处理钩子模板' => $this->generateDescription($className),
+                    '批量处理钩子模板' => $description,
                 ]);
                 break;
 
@@ -212,7 +216,7 @@ class MakeHookCommand extends Command
                     'class EventDrivenHookTemplate' => "class {$className}",
                     'event.driven.hook' => $hookName,
                     'event' => $group,
-                    '事件驱动钩子模板' => $this->generateDescription($className),
+                    '事件驱动钩子模板' => $description,
                 ]);
                 break;
 
@@ -221,7 +225,7 @@ class MakeHookCommand extends Command
                     'class CacheAwareHookTemplate' => "class {$className}",
                     'cache.aware.hook' => $hookName,
                     'cache' => $group,
-                    '缓存感知钩子模板' => $this->generateDescription($className),
+                    '缓存感知钩子模板' => $description,
                 ]);
                 break;
 
@@ -230,7 +234,7 @@ class MakeHookCommand extends Command
                     'class ValidationHookTemplate' => "class {$className}",
                     'validation.hook' => $hookName,
                     'validation' => $group,
-                    '数据验证钩子模板' => $this->generateDescription($className),
+                    '数据验证钩子模板' => $description,
                 ]);
                 break;
 
@@ -239,7 +243,7 @@ class MakeHookCommand extends Command
                     'class ViewHookTemplate' => "class {$className}",
                     'view.hook.name' => $hookName,
                     'view' => $group,
-                    '视图处理钩子模板' => $this->generateDescription($className),
+                    '视图处理钩子模板' => $description,
                 ]);
                 break;
 
@@ -248,14 +252,72 @@ class MakeHookCommand extends Command
                     'class ViewComposerHookTemplate' => "class {$className}",
                     'view.composer.hook' => $hookName,
                     'view' => $group,
-                    '视图组合器钩子模板' => $this->generateDescription($className),
+                    '视图组合器钩子模板' => $description,
                 ]);
                 break;
         }
 
-        // 通用替换
-        $replacements["@priority 10"] = "@priority {$priority}";
+        // 处理 Attribute 或传统注释
+        if ($useAttribute) {
+            $replacements = $this->addAttributeReplacements($replacements, $hookName, $priority, $group, $description);
+        } else {
+            $replacements = $this->addLegacyReplacements($replacements, $hookName, $priority, $group);
+        }
 
+        return $replacements;
+    }
+
+    /**
+     * 判断是否应该使用 Attribute 语法
+     */
+    protected function shouldUseAttribute(): bool
+    {
+        // 如果明确指定了 --legacy，使用传统注释
+        if ($this->option('legacy')) {
+            return false;
+        }
+
+        // 如果明确指定了 --attribute，使用 Attribute
+        if ($this->option('attribute')) {
+            return true;
+        }
+
+        // 默认：如果 PHP 版本支持 Attribute，则使用 Attribute
+        return PHP_VERSION_ID >= 80200;
+    }
+
+    /**
+     * 添加 Attribute 相关的替换
+     */
+    protected function addAttributeReplacements(array $replacements, string $hookName, int $priority, string $group, string $description): array
+    {
+        // 确保导入 Attribute 类
+        $attributeImports = [
+            'use App\Hooks\Attributes\Hook;',
+            'use App\Hooks\Attributes\Priority;',
+            'use App\Hooks\Attributes\Group;',
+        ];
+
+        // 生成 Attribute 语法
+        $attributeCode = "#[Hook(\n    name: '{$hookName}',\n    priority: {$priority},\n    group: '{$group}',\n    description: '{$description}'\n)]";
+
+        // 添加导入语句
+        foreach ($attributeImports as $import) {
+            if (!str_contains($replacements['namespace App\Hooks\Templates;'] ?? '', $import)) {
+                $replacements['use App\Hooks\AbstractHook;'] = $import . "\nuse App\Hooks\AbstractHook;";
+            }
+        }
+
+        return $replacements;
+    }
+
+    /**
+     * 添加传统注释相关的替换
+     */
+    protected function addLegacyReplacements(array $replacements, string $hookName, int $priority, string $group): array
+    {
+        $replacements["@priority 10"] = "@priority {$priority}";
+        
         return $replacements;
     }
 
@@ -300,6 +362,8 @@ class MakeHookCommand extends Command
   --priority=PRIORITY   优先级 (默认: 10)
   --group=GROUP        分组 (默认: custom)
   --force              覆盖现有文件
+  --attribute          强制使用 PHP 8.2 Attribute 语法
+  --legacy             强制使用传统注释语法
 
 可用模板:
   basic        基础模板 (完整功能)
@@ -313,13 +377,43 @@ class MakeHookCommand extends Command
   view         视图处理模板
   view-composer 视图组合器模板
 
+注解语法:
+  默认情况下，如果 PHP 版本 >= 8.2，将使用 Attribute 语法
+  如果 PHP 版本 < 8.2，将使用传统注释语法
+  可以使用 --attribute 或 --legacy 选项强制指定语法
+
 示例:
+  # 基础用法
   php artisan make:hook UserLogin
   php artisan make:hook OrderProcess --template=async
+  
+  # 指定钩子信息
   php artisan make:hook DataValidator --template=validation --group=validation
   php artisan make:hook BatchImport --template=batch --hook=data.import.batch
+  
+  # 视图钩子
   php artisan make:hook ViewProcessor --template=view --group=view
   php artisan make:hook MenuComposer --template=view-composer --group=view
+  
+  # 强制使用 Attribute 语法 (PHP 8.2+)
+  php artisan make:hook ModernHook --attribute
+  
+  # 强制使用传统注释语法
+  php artisan make:hook LegacyHook --legacy
+
+PHP 8.2 Attribute 示例:
+  #[Hook(name: 'user.login', priority: 10, group: 'auth')]
+  #[Middleware(class: 'AuthMiddleware')]
+  #[Condition(type: 'environment', value: 'production')]
+  class UserLoginHook extends AbstractHook { ... }
+
+传统注释示例:
+  /**
+   * @hook user.login
+   * @priority 10
+   * @group auth
+   */
+  class UserLoginHook extends AbstractHook { ... }
 
 HELP;
     }

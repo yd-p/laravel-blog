@@ -148,12 +148,12 @@ class Plugins extends Page
             ->modalCancelActionLabel('取消')
             ->modalDescription('确定要删除吗？')
             ->action(function (array $arguments) {
-//                $this->deactivate($arguments['folder']);
-//                $path = base_path("plugins/{$arguments['folder']}");
-//                if (File::exists($path)) {
-//                    File::deleteDirectory($path);
-//                }
-//                $this->refreshPlugins();
+               $this->deactivate($arguments['folder']);
+               $path = base_path("plugins/{$arguments['folder']}");
+               if (File::exists($path)) {
+                   File::deleteDirectory($path);
+               }
+               $this->refreshPlugins();
                 $pluginsManager = app(PluginsManager::class);
                 $pluginsManager->delete($arguments['name']);
                 Notification::make()
@@ -178,7 +178,7 @@ class Plugins extends Page
                 $pluginsManager = app(PluginsManager::class);
                 $pluginsManager->disable($arguments['name']);
                 $this->refreshPlugins();
-//                $this->deactivate($arguments['folder']);
+               $this->deactivate($arguments['folder']);
                 Notification::make()
                     ->body('插件'.$arguments['name'].'已禁用')
                     ->danger()
@@ -197,7 +197,7 @@ class Plugins extends Page
             ->modalCancelActionLabel('取消')
             ->modalDescription('确定要启用吗？')
             ->action(function (array $arguments) {
-//                $this->activate($arguments['folder']);
+               $this->activate($arguments['folder']);
                 $pluginsManager = app(PluginsManager::class);
                 $pluginsManager->enable($arguments['name']);
                 $this->refreshPlugins();

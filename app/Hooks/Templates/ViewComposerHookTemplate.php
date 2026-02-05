@@ -408,11 +408,11 @@ class ViewComposerHookTemplate extends AbstractHook
         return [];
     }
 
-    protected function getMetaData(string $viewName): array
-    {
-        // TODO: 获取元数据
-        return [];
-    }
+    // protected function getMetaData(string $viewName): array
+    // {
+    //     // TODO: 获取元数据
+    //     return [];
+    // }
 
     protected function getBreadcrumbs(string $viewName): array
     {

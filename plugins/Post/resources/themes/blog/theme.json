@@ -1,0 +1,43 @@
+{
+    "name": "博客主题",
+    "slug": "blog",
+    "version": "1.0.0",
+    "description": "Post插件提供的专业博客主题，专为内容展示优化",
+    "author": "Post Plugin",
+    "plugin": "Post",
+    "screenshot": "screenshot.png",
+    "colors": {
+        "primary": "#6366f1",
+        "secondary": "#8b5cf6",
+        "success": "#10b981",
+        "danger": "#ef4444",
+        "warning": "#f59e0b",
+        "info": "#3b82f6",
+        "light": "#f8fafc",
+        "dark": "#0f172a"
+    },
+    "fonts": {
+        "body": "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        "heading": "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        "mono": "'Fira Code', 'SF Mono', Monaco, monospace"
+    },
+    "settings": {
+        "layout": "boxed",
+        "sidebar": "right",
+        "header_style": "transparent",
+        "footer_style": "minimal",
+        "card_style": "elevated"
+    },
+    "features": [
+        "responsive",
+        "dark-mode",
+        "rtl-support",
+        "accessibility",
+        "seo-optimized",
+        "performance-optimized"
+    ],
+    "requirements": {
+        "php": ">=8.2",
+        "laravel": ">=12.0"
+    }
+}

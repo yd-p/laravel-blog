@@ -1,0 +1,35 @@
+{
+    "name": "默认主题",
+    "slug": "default",
+    "version": "1.0.0",
+    "description": "系统默认主题，简洁现代的设计风格",
+    "author": "Laravel CMS",
+    "screenshot": "screenshot.png",
+    "colors": {
+        "primary": "#3b82f6",
+        "secondary": "#6b7280",
+        "success": "#10b981",
+        "danger": "#ef4444",
+        "warning": "#f59e0b",
+        "info": "#3b82f6",
+        "light": "#f3f4f6",
+        "dark": "#1f2937"
+    },
+    "fonts": {
+        "body": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+        "heading": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+        "mono": "'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace"
+    },
+    "settings": {
+        "layout": "wide",
+        "sidebar": "right",
+        "header_style": "fixed",
+        "footer_style": "default"
+    },
+    "features": [
+        "responsive",
+        "dark-mode",
+        "rtl-support",
+        "accessibility"
+    ]
+}

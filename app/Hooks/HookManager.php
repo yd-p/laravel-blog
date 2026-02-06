@@ -437,11 +437,11 @@ class HookManager
      */
     protected function saveHooksToCache(): void
     {
-        if (!$this->cacheEnabled) {
-            return;
-        }
+        // if (!$this->cacheEnabled) {
+        //     return;
+        // }
         
-        Cache::put($this->cachePrefix . 'registered', $this->hooks, now()->addHours(24));
+        // Cache::put($this->cachePrefix . 'registered', $this->hooks, now()->addHours(24));
     }
 
     /**

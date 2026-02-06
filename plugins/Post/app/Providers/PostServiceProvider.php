@@ -10,7 +10,7 @@ class PostServiceProvider extends ServiceProvider
     public function register(): void
     {
         // 注册视图生命周期钩子
-        $this->app->singleton(PostViewLifecycleHooks::class);
+        // $this->app->singleton(PostViewLifecycleHooks::class);
     }
 
     public function boot(): void
@@ -27,8 +27,8 @@ class PostServiceProvider extends ServiceProvider
      */
     protected function registerViewLifecycleHooks(): void
     {
-        $hooks = $this->app->make(PostViewLifecycleHooks::class);
-        $hooks->register();
-        $hooks->registerCustomHooks();
+        // $hooks = $this->app->make(PostViewLifecycleHooks::class);
+        // $hooks->register();
+        // $hooks->registerCustomHooks();
     }
 }

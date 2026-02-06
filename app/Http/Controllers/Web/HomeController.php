@@ -35,7 +35,7 @@ class HomeController extends Controller
             ->take(8)
             ->get();
 
-        return view('web.home', compact('latestPosts', 'popularPosts', 'categories'));
+        // return view('web.home', compact('latestPosts', 'popularPosts', 'categories'));
     }
 
     /**
@@ -74,7 +74,7 @@ class HomeController extends Controller
         $posts = $query->paginate(12);
         $categories = Category::enabled()->ordered()->get();
 
-        return view('web.posts.index', compact('posts', 'categories'));
+        // return view('web.posts.index', compact('posts', 'categories'));
     }
 
     /**
@@ -113,7 +113,7 @@ class HomeController extends Controller
             ->orderBy('published_at', 'asc')
             ->first();
 
-        return view('web.posts.show', compact('post', 'relatedPosts', 'prevPost', 'nextPost'));
+        // return view('web.posts.show', compact('post', 'relatedPosts', 'prevPost', 'nextPost'));
     }
 
     /**
@@ -149,7 +149,7 @@ class HomeController extends Controller
 
         $posts = $query->paginate(12);
 
-        return view('web.categories.show', compact('category', 'posts'));
+        // return view('web.categories.show', compact('category', 'posts'));
     }
 
     /**
@@ -168,7 +168,7 @@ class HomeController extends Controller
             ->latest()
             ->paginate(12);
 
-        return view('web.search', compact('posts', 'keyword'));
+        // return view('web.search', compact('posts', 'keyword'));
     }
 
     /**
@@ -190,7 +190,7 @@ class HomeController extends Controller
                 ];
             });
 
-        return view('web.archive', compact('archives'));
+        // return view('web.archive', compact('archives'));
     }
 
     /**
@@ -207,6 +207,6 @@ class HomeController extends Controller
 
         $date = sprintf('%04d年%02d月', $year, $month);
 
-        return view('web.archive-date', compact('posts', 'date', 'year', 'month'));
+        // return view('web.archive-date', compact('posts', 'date', 'year', 'month'));
     }
 }

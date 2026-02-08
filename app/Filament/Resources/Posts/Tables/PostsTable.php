@@ -18,53 +18,96 @@ class PostsTable
         return $table
             ->columns([
                 TextColumn::make('category.name')
-                    ->searchable(),
+                    ->label('文章分类')
+                    ->searchable()
+                    ->placeholder('未分类'),
+
                 TextColumn::make('title')
+                    ->label('文章标题')
                     ->searchable(),
+
                 TextColumn::make('slug')
+                    ->label('文章别名')
                     ->searchable(),
+
                 TextColumn::make('thumbnail')
-                    ->searchable(),
+                    ->label('缩略图')
+                    ->searchable()
+                    ->placeholder('未设置')
+                    ->limit(30),
+
                 TextColumn::make('status')
+                    ->label('文章状态')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->formatStateUsing(function ($state) {
+                        return $state == 1 ? '发布' : '草稿';
+                    })
+                    ->color(function ($state) {
+                        return $state == 1 ? 'success' : 'warning';
+                    }),
+
                 TextColumn::make('published_at')
-                    ->dateTime()
-                    ->sortable(),
+                    ->label('发布时间')
+                    ->dateTime('Y-m-d H:i:s')
+                    ->sortable()
+                    ->placeholder('未发布'),
+
                 TextColumn::make('view_count')
+                    ->label('浏览次数')
                     ->numeric()
                     ->sortable(),
+
                 TextColumn::make('seo_title')
-                    ->searchable(),
+                    ->label('SEO标题')
+                    ->searchable()
+                    ->placeholder('未设置'),
+
                 TextColumn::make('seo_keywords')
-                    ->searchable(),
+                    ->label('SEO关键词')
+                    ->searchable()
+                    ->placeholder('未设置'),
+
                 TextColumn::make('author.name')
-                    ->searchable(),
+                    ->label('文章作者')
+                    ->searchable()
+                    ->placeholder('未知作者'),
+
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('创建时间')
+                    ->dateTime('Y-m-d H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('更新时间')
+                    ->dateTime('Y-m-d H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('deleted_at')
-                    ->dateTime()
+                    ->label('删除时间')
+                    ->dateTime('Y-m-d H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                TrashedFilter::make(),
+                TrashedFilter::make()
+                    ->label('显示已删除文章'),
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->label('编辑'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                ]),
+                    DeleteBulkAction::make()
+                        ->label('删除'),
+                    ForceDeleteBulkAction::make()
+                        ->label('强制删除'),
+                    RestoreBulkAction::make()
+                        ->label('恢复'),
+                ])->label('批量操作'),
             ]);
     }
 }

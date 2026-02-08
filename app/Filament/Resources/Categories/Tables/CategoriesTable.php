@@ -18,46 +18,79 @@ class CategoriesTable
         return $table
             ->columns([
                 TextColumn::make('parent.name')
-                    ->searchable(),
+                    ->label('父分类')
+                    ->searchable()
+                    ->placeholder('无'),
+
                 TextColumn::make('name')
+                    ->label('分类名称')
                     ->searchable(),
+
                 TextColumn::make('slug')
+                    ->label('分类别名')
                     ->searchable(),
+
                 TextColumn::make('seo_title')
-                    ->searchable(),
+                    ->label('SEO标题')
+                    ->searchable()
+                    ->placeholder('未设置'),
+
                 TextColumn::make('seo_keywords')
-                    ->searchable(),
+                    ->label('SEO关键词')
+                    ->searchable()
+                    ->placeholder('未设置'),
+
                 TextColumn::make('sort')
+                    ->label('排序值')
                     ->numeric()
                     ->sortable(),
+
                 TextColumn::make('status')
+                    ->label('状态')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->formatStateUsing(function ($state) {
+                        return $state == 1 ? '启用' : '禁用';
+                    })
+                    ->color(function ($state) {
+                        return $state == 1 ? 'success' : 'danger';
+                    }),
+
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('创建时间')
+                    ->dateTime('Y-m-d H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('更新时间')
+                    ->dateTime('Y-m-d H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('deleted_at')
-                    ->dateTime()
+                    ->label('删除时间')
+                    ->dateTime('Y-m-d H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                TrashedFilter::make(),
+                TrashedFilter::make()
+                    ->label('显示已删除数据'),
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->label('编辑'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                ]),
+                    DeleteBulkAction::make()
+                        ->label('删除'),
+                    ForceDeleteBulkAction::make()
+                        ->label('强制删除'),
+                    RestoreBulkAction::make()
+                        ->label('恢复'),
+                ])->label('批量操作'),
             ]);
     }
 }

@@ -12,7 +12,6 @@ class LHCoreServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        // 注册 PluginsManager 为单例
         $this->app->singleton(PluginsManager::class, function () {
             return new PluginsManager();
         });
@@ -25,7 +24,24 @@ class LHCoreServiceProvider extends ServiceProvider
             throw new \RuntimeException('Composer autoloader is not a ClassLoader instance.');
         }
         app(PluginsManager::class)->loadPlugins($loader, $this->app);
-        (new ThemeManager())->boot();
+        app(ThemeManager::class)->boot();
+        $this->app->register(\App\Providers\ThemeServiceProvider::class);
+        $this->registerThemeFinder();
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'lh');
+    }
+
+    protected function registerThemeFinder(): void
+    {
+        $this->app->singleton('theme.finder', function ($app) {
+            $themeFinder = new ThemeViewFinder(
+                $app['files'],
+                $app['config']['view.paths']
+            );
+            $themeFinder->setHints(
+                $this->app->make('view')->getFinder()->getHints()
+            );
+            return $themeFinder;
+        });
+        $this->app->make('theme.finder')->setActiveTheme('blog', 'test');
     }
 }

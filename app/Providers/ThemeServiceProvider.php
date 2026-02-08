@@ -16,8 +16,8 @@ class ThemeServiceProvider extends ServiceProvider
         $this->app->singleton(ThemeService::class, function ($app) {
             return new ThemeService();
         });
-
         $this->app->alias(ThemeService::class, 'theme');
+
     }
 
     /**
@@ -26,13 +26,13 @@ class ThemeServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $theme = $this->app->make(ThemeService::class);
-        
+
         // 注册主题视图命名空间
         $theme->registerViewNamespace();
 
         // 注册 Blade 指令
         $this->registerBladeDirectives();
-        
+
         // 注册主题生命周期钩子
         $this->registerThemeLifecycleHooks();
 
@@ -62,14 +62,13 @@ class ThemeServiceProvider extends ServiceProvider
             return "<?php echo app('theme')->getThemeConfig({$expression}); ?>";
         });
     }
-    
+
     /**
      * 注册主题生命周期钩子
      */
     protected function registerThemeLifecycleHooks(): void
     {
         $lifecycle = $this->app->make(\App\Services\ViewLifecycleService::class);
-        
         // 主题视图渲染前钩子 - 注入主题配置
         $lifecycle->registerLifecycleHook('view.composing', '*', function ($viewName, $data) {
             $theme = app('theme');

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,9 @@ use Filament\Pages\Page;
 
 class Plugins extends Page
 {
+    use HasPageShield;
 
     protected string $view = 'filament.pages.plugins';
-
     protected static ?string $navigationLabel = '插件';
 
     public array $plugins = [];
@@ -39,12 +40,12 @@ class Plugins extends Page
         }
 
         $iterator = new \DirectoryIterator($pluginRoot);
-        
+
         foreach ($iterator as $folder) {
             if ($folder->isDot() || !$folder->isDir()) {
                 continue;
             }
-            
+
             $folderName = $folder->getFilename();
             $manifestPath = $pluginRoot . '/' . $folderName . '/plugin.json';
             if (File::exists($manifestPath)) {
@@ -207,5 +208,5 @@ class Plugins extends Page
                     ->send();
             });
     }
-   
+
 }

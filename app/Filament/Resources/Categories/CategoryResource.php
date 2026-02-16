@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Categories;
 use App\Filament\Resources\Categories\Pages\CreateCategory;
 use App\Filament\Resources\Categories\Pages\EditCategory;
 use App\Filament\Resources\Categories\Pages\ListCategories;
-use App\Filament\Resources\Categories\Pages\TreeCategories;
 use App\Filament\Resources\Categories\Schemas\CategoryForm;
 use App\Filament\Resources\Categories\Tables\CategoriesTable;
 use App\Models\Category;
@@ -44,18 +43,11 @@ class CategoryResource extends Resource
         ];
     }
 
-    public static function tree(Tree $tree): Tree
-    {
-        return $tree
-            ->fields([
-                TextField::make('name'),
-            ]);
-    }
 
     public static function getPages(): array
     {
         return [
-            'index' => TreeCategories::route('/'),
+            'index' => ListCategories::route('/'),
             'create' => CreateCategory::route('/create'),
             'edit' => EditCategory::route('/{record}/edit'),
         ];

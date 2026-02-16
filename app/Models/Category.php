@@ -11,7 +11,7 @@ use Openplain\FilamentTreeView\Concerns\HasTreeStructure;
 
 class Category extends Model
 {
-    use HasFactory, SoftDeletes,HasTreeStructure;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'parent_id',
@@ -24,17 +24,11 @@ class Category extends Model
         'sort',
         'status',
     ];
-
     protected $casts = [
         'parent_id' => 'integer',
         'sort' => 'integer',
         'status' => 'integer',
     ];
-
-    public function getOrderKeyName(): string
-    {
-        return 'sort';
-    }
 
     /**
      * 获取父分类

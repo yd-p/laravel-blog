@@ -490,10 +490,13 @@ $comment->updateReplyCount();
 
 ## 相关文件
 
+- 主资源: `app/Filament/Resources/Comments/CommentResource.php`
+- 表单配置: `app/Filament/Resources/Comments/Schemas/CommentForm.php`
+- 表格配置: `app/Filament/Resources/Comments/Tables/CommentsTable.php`
+- 页面: `app/Filament/Resources/Comments/Pages/*.php`
 - 模型: `app/Models/Comment.php`
 - Trait: `app/Models/Concerns/HasComments.php`
 - 枚举: `app/Enums/CommentStatus.php`
-- 资源: `app/Filament/Resources/CommentResource.php`
 - 迁移: `database/migrations/2024_01_01_000005_create_comments_table.php`
 - 填充: `database/seeders/CommentSeeder.php`
 

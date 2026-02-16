@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\MediaResource\Pages;
+namespace App\Filament\Resources\Media\Pages;
 
-use App\Filament\Resources\MediaResource;
-use Filament\Actions;
+use App\Filament\Resources\Media\MediaResource;
+use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewMedia extends ViewRecord
@@ -13,8 +13,7 @@ class ViewMedia extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
-            Actions\DeleteAction::make(),
+            EditAction::make(),
         ];
     }
 }

@@ -28,14 +28,16 @@
 - ✅ CommentStatus 枚举（PHP 8.2+）
 - ✅ 模型事件处理（自动更新回复数）
 
-### 4. Filament 管理界面
-- ✅ CommentResource（Filament 5.x API）
-- ✅ 列表页（带状态标签页）
+### 4. Filament 5.x 管理界面
+- ✅ CommentResource（完全使用 Filament 5.x API）
+- ✅ 使用 `TextColumn::badge()` 而不是 `BadgeColumn`
+- ✅ 使用 `Select` with `native(false)`
+- ✅ 列表页（带状态标签页，使用 `Tab::make()`）
 - ✅ 创建页（自动填充 IP 和 User Agent）
 - ✅ 编辑页
 - ✅ 查看页
 - ✅ 筛选器（状态、文章、类型、日期）
-- ✅ 批量操作（批准、标记垃圾、删除）
+- ✅ 批量操作（使用 `BulkActionGroup`）
 - ✅ 导航徽章（显示待审核数量）
 
 ### 5. 数据填充
@@ -58,12 +60,14 @@
 4. `app/Models/Concerns/HasComments.php` - 评论 Trait
 5. `database/seeders/CommentSeeder.php` - 数据填充
 
-### Filament 资源
-6. `app/Filament/Resources/CommentResource.php` - 主资源文件
-7. `app/Filament/Resources/CommentResource/Pages/ListComments.php` - 列表页
-8. `app/Filament/Resources/CommentResource/Pages/CreateComment.php` - 创建页
-9. `app/Filament/Resources/CommentResource/Pages/EditComment.php` - 编辑页
-10. `app/Filament/Resources/CommentResource/Pages/ViewComment.php` - 查看页
+### Filament 资源（参考 Categories 结构）
+6. `app/Filament/Resources/Comments/CommentResource.php` - 主资源文件
+7. `app/Filament/Resources/Comments/Schemas/CommentForm.php` - 表单配置
+8. `app/Filament/Resources/Comments/Tables/CommentsTable.php` - 表格配置
+9. `app/Filament/Resources/Comments/Pages/ListComments.php` - 列表页
+10. `app/Filament/Resources/Comments/Pages/CreateComment.php` - 创建页
+11. `app/Filament/Resources/Comments/Pages/EditComment.php` - 编辑页
+12. `app/Filament/Resources/Comments/Pages/ViewComment.php` - 查看页
 
 ### 文档文件
 11. `docs/07-comment-system.md` - 完整文档
@@ -81,6 +85,7 @@
 ✅ 使用 PHP 8.2+ 枚举
 ✅ 遵循 Laravel 12.x 最佳实践
 ✅ 完整的代码注释（中文）
+✅ 参考 Categories 的目录结构（分离 Schema 和 Table）
 
 ## 使用方法
 

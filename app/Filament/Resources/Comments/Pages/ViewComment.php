@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\CommentResource\Pages;
+namespace App\Filament\Resources\Comments\Pages;
 
-use App\Filament\Resources\CommentResource;
-use Filament\Actions;
+use App\Filament\Resources\Comments\CommentResource;
+use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewComment extends ViewRecord
@@ -13,8 +13,7 @@ class ViewComment extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
-            Actions\DeleteAction::make(),
+            EditAction::make(),
         ];
     }
 }

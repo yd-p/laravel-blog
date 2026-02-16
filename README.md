@@ -34,6 +34,13 @@
 - **[插件系统](docs/04-plugin-system.md)** - 插件开发和管理
 - **[FilamentPHP 指南](docs/05-filament-guide.md)** - 后台管理系统使用指南
 - **[视图生命周期](docs/06-view-lifecycle.md)** - 视图生命周期钩子系统
+- **[评论系统](docs/07-comment-system.md)** - WordPress 风格评论系统
+
+### 快速参考
+
+- **[评论系统快速参考](COMMENT_SYSTEM_QUICK_REFERENCE.md)** - 评论系统常用代码
+- **[枚举使用指南](ENUM_USAGE_GUIDE.md)** - PHP 8.2+ 枚举使用
+- **[媒体库指南](MEDIA_LIBRARY_GUIDE.md)** - 媒体库完整指南
 
 查看 [完整文档索引](docs/INDEX.md)
 

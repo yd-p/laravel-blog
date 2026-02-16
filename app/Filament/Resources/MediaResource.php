@@ -61,16 +61,10 @@ class MediaResource extends Resource
 
                         Forms\Components\Select::make('collection_name')
                             ->label('集合')
-                            ->options([
-                                'default' => '默认',
-                                'posts' => '文章',
-                                'products' => '产品',
-                                'avatars' => '头像',
-                                'banners' => '横幅',
-                                'documents' => '文档',
-                            ])
-                            ->default('default')
-                            ->searchable(),
+                            ->options(\App\Enums\MediaCollection::toSelectArray())
+                            ->default(\App\Enums\MediaCollection::DEFAULT->value)
+                            ->searchable()
+                            ->native(false),
 
                         Forms\Components\Select::make('uploaded_by')
                             ->label('上传者')
@@ -155,27 +149,9 @@ class MediaResource extends Resource
                 Tables\Columns\TextColumn::make('type')
                     ->label('类型')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'image' => 'success',
-                        'video' => 'warning',
-                        'audio' => 'info',
-                        'document' => 'primary',
-                        default => 'gray',
-                    })
-                    ->icon(fn (string $state): string => match ($state) {
-                        'image' => 'heroicon-o-photo',
-                        'video' => 'heroicon-o-film',
-                        'audio' => 'heroicon-o-musical-note',
-                        'document' => 'heroicon-o-document-text',
-                        default => 'heroicon-o-document',
-                    })
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'image' => '图片',
-                        'video' => '视频',
-                        'audio' => '音频',
-                        'document' => '文档',
-                        default => '其他',
-                    }),
+                    ->formatStateUsing(fn (string $state): string => \App\Enums\MediaType::from($state)->label())
+                    ->color(fn (string $state): string => \App\Enums\MediaType::from($state)->color())
+                    ->icon(fn (string $state): string => \App\Enums\MediaType::from($state)->icon()),
 
                 Tables\Columns\TextColumn::make('collection_name')
                     ->label('集合')
@@ -214,12 +190,7 @@ class MediaResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('type')
                     ->label('文件类型')
-                    ->options([
-                        'image' => '图片',
-                        'video' => '视频',
-                        'audio' => '音频',
-                        'document' => '文档',
-                    ])
+                    ->options(\App\Enums\MediaType::toSelectArray())
                     ->query(function (Builder $query, array $data) {
                         if (isset($data['value'])) {
                             return $query->ofType($data['value']);
@@ -229,14 +200,7 @@ class MediaResource extends Resource
 
                 Tables\Filters\SelectFilter::make('collection_name')
                     ->label('集合')
-                    ->options([
-                        'default' => '默认',
-                        'posts' => '文章',
-                        'products' => '产品',
-                        'avatars' => '头像',
-                        'banners' => '横幅',
-                        'documents' => '文档',
-                    ]),
+                    ->options(\App\Enums\MediaCollection::toSelectArray()),
 
                 Tables\Filters\SelectFilter::make('uploaded_by')
                     ->label('上传者')
@@ -297,15 +261,9 @@ class MediaResource extends Resource
                         ->form([
                             Forms\Components\Select::make('collection_name')
                                 ->label('目标集合')
-                                ->options([
-                                    'default' => '默认',
-                                    'posts' => '文章',
-                                    'products' => '产品',
-                                    'avatars' => '头像',
-                                    'banners' => '横幅',
-                                    'documents' => '文档',
-                                ])
-                                ->required(),
+                                ->options(\App\Enums\MediaCollection::toSelectArray())
+                                ->required()
+                                ->native(false),
                         ])
                         ->action(function (array $data, $records) {
                             $records->each->update(['collection_name' => $data['collection_name']]);

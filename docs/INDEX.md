@@ -52,12 +52,28 @@
    - API 参考
    - 最佳实践
 
+8. **[07 - 评论系统](07-comment-system.md)**
+   - WordPress 风格评论系统
+   - 评论状态管理
+   - 嵌套回复
+   - Filament 管理界面
+   - 前端集成
+   - API 参考
+
 ### 技术文档
 
 8. **[执行顺序](EXECUTION_ORDER.md)**
    - 系统启动流程
    - 服务提供者顺序
    - 插件加载时机
+
+### 快速参考
+
+- **[评论系统快速参考](../COMMENT_SYSTEM_QUICK_REFERENCE.md)** - 评论系统常用代码片段
+- **[枚举使用指南](../ENUM_USAGE_GUIDE.md)** - PHP 8.2+ 枚举使用
+- **[媒体库指南](../MEDIA_LIBRARY_GUIDE.md)** - 媒体库完整指南
+- **[媒体库快速参考](../MEDIA_LIBRARY_QUICK_REFERENCE.md)** - 媒体库常用代码
+- **[视图生命周期快速参考](../app/Hooks/VIEW_LIFECYCLE_QUICK_REFERENCE.md)** - 视图钩子快速参考
 
 ### 开发文档
 
@@ -102,6 +118,14 @@
 1. [FilamentPHP 指南 - 文章管理](05-filament-guide.md#文章管理)
 2. [FilamentPHP 指南 - 分类管理](05-filament-guide.md#分类管理)
 3. [FilamentPHP 指南 - 自定义资源](05-filament-guide.md#自定义资源)
+4. [评论系统 - 管理界面](07-comment-system.md#filament-管理界面)
+
+### 评论系统
+
+1. [评论系统 - 快速开始](07-comment-system.md#概述)
+2. [评论系统 - 模型使用](07-comment-system.md#模型使用)
+3. [评论系统 - 前端集成](07-comment-system.md#前端集成)
+4. [评论系统快速参考](../COMMENT_SYSTEM_QUICK_REFERENCE.md)
 
 ## 🔍 按功能查找
 

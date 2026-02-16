@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TagStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -9,12 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Tag extends Model
 {
     use HasFactory;
-
-    /**
-     * 状态常量
-     */
-    const STATUS_DISABLED = 0;
-    const STATUS_ENABLED = 1;
 
     /**
      * 可批量赋值的属性
@@ -32,7 +27,7 @@ class Tag extends Model
      * 属性类型转换
      */
     protected $casts = [
-        'status' => 'integer',
+        'status' => TagStatus::class,
         'post_count' => 'integer',
     ];
 

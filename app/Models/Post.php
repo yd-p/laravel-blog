@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\PostStatus;
+use App\Models\Concerns\HasMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,11 +13,7 @@ use Illuminate\Support\Str;
 
 class Post extends Model
 {
-    use HasFactory, SoftDeletes;
-
-    const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
-    const STATUS_TRASH = 3;
+    use HasFactory, SoftDeletes, HasMedia;
 
     protected $fillable = [
         'category_id',
@@ -35,7 +33,7 @@ class Post extends Model
 
     protected $casts = [
         'category_id' => 'integer',
-        'status' => 'integer',
+        'status' => PostStatus::class,
         'published_at' => 'datetime',
         'view_count' => 'integer',
         'author_id' => 'integer',
@@ -75,12 +73,7 @@ class Post extends Model
      */
     public function getStatusTextAttribute(): string
     {
-        return match($this->status) {
-            self::STATUS_DRAFT => '草稿',
-            self::STATUS_PUBLISHED => '已发布',
-            self::STATUS_TRASH => '回收站',
-            default => '未知',
-        };
+        return $this->status->label();
     }
 
     /**
@@ -109,7 +102,7 @@ class Post extends Model
      */
     public function isPublished(): bool
     {
-        return $this->status === self::STATUS_PUBLISHED && 
+        return $this->status === PostStatus::PUBLISHED && 
                $this->published_at && 
                $this->published_at->isPast();
     }
@@ -119,7 +112,7 @@ class Post extends Model
      */
     public function isDraft(): bool
     {
-        return $this->status === self::STATUS_DRAFT;
+        return $this->status === PostStatus::DRAFT;
     }
 
     /**
@@ -136,7 +129,7 @@ class Post extends Model
     public function publish(): void
     {
         $this->update([
-            'status' => self::STATUS_PUBLISHED,
+            'status' => PostStatus::PUBLISHED,
             'published_at' => now(),
         ]);
     }
@@ -147,7 +140,7 @@ class Post extends Model
     public function unpublish(): void
     {
         $this->update([
-            'status' => self::STATUS_DRAFT,
+            'status' => PostStatus::DRAFT,
             'published_at' => null,
         ]);
     }
@@ -157,7 +150,7 @@ class Post extends Model
      */
     public function scopePublished($query)
     {
-        return $query->where('status', self::STATUS_PUBLISHED)
+        return $query->where('status', PostStatus::PUBLISHED)
                     ->whereNotNull('published_at')
                     ->where('published_at', '<=', now());
     }
@@ -167,7 +160,7 @@ class Post extends Model
      */
     public function scopeDraft($query)
     {
-        return $query->where('status', self::STATUS_DRAFT);
+        return $query->where('status', PostStatus::DRAFT);
     }
 
     /**

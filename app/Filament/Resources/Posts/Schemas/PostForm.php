@@ -3,9 +3,11 @@
 namespace App\Filament\Resources\Posts\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Schema;
 
 class PostForm
@@ -35,7 +37,7 @@ class PostForm
                     ->columnSpanFull()
                     ->placeholder('请输入文章简短摘要（选填）'),
 
-                Textarea::make('content')
+                RichEditor::make('content')
                     ->label('文章内容')
                     ->required()
                     ->columnSpanFull()
@@ -65,18 +67,22 @@ class PostForm
                     ->default(0)
                     ->placeholder('初始浏览次数，默认0'),
 
-                TextInput::make('seo_title')
-                    ->label('SEO标题')
-                    ->placeholder('请输入SEO标题（选填）'),
+                Tabs::make()->tabs([
+                    Tabs\Tab::make('seo设置')->schema([
+                        TextInput::make('seo_title')
+                            ->label('SEO标题')
+                            ->placeholder('请输入SEO标题（选填）'),
 
-                TextInput::make('seo_keywords')
-                    ->label('SEO关键词')
-                    ->placeholder('请输入SEO关键词，多个用逗号分隔（选填）'),
+                        TextInput::make('seo_keywords')
+                            ->label('SEO关键词')
+                            ->placeholder('请输入SEO关键词，多个用逗号分隔（选填）'),
 
-                Textarea::make('seo_description')
-                    ->label('SEO描述')
-                    ->columnSpanFull()
-                    ->placeholder('请输入SEO描述（选填）'),
+                        Textarea::make('seo_description')
+                            ->label('SEO描述')
+                            ->columnSpanFull()
+                            ->placeholder('请输入SEO描述（选填）'),
+                    ])
+                ]),
 
                 Select::make('author_id')
                     ->label('文章作者')

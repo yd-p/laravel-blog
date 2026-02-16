@@ -10,6 +10,7 @@ use Filament\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\ToggleColumn;
 
 class CategoriesTable
 {
@@ -45,16 +46,9 @@ class CategoriesTable
                     ->numeric()
                     ->sortable(),
 
-                TextColumn::make('status')
+                ToggleColumn::make('status')
                     ->label('状态')
-                    ->numeric()
-                    ->sortable()
-                    ->formatStateUsing(function ($state) {
-                        return $state == 1 ? '启用' : '禁用';
-                    })
-                    ->color(function ($state) {
-                        return $state == 1 ? 'success' : 'danger';
-                    }),
+                    ->sortable(),
 
                 TextColumn::make('created_at')
                     ->label('创建时间')

@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Openplain\FilamentTreeView\Concerns\HasTreeStructure;
 
 class Category extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes,HasTreeStructure;
 
     protected $fillable = [
         'parent_id',
@@ -29,6 +30,11 @@ class Category extends Model
         'sort' => 'integer',
         'status' => 'integer',
     ];
+
+    public function getOrderKeyName(): string
+    {
+        return 'sort';
+    }
 
     /**
      * 获取父分类
@@ -77,12 +83,12 @@ class Category extends Model
     {
         $path = [$this->name];
         $parent = $this->parent;
-        
+
         while ($parent) {
             array_unshift($path, $parent->name);
             $parent = $parent->parent;
         }
-        
+
         return implode(' > ', $path);
     }
 
@@ -141,14 +147,14 @@ class Category extends Model
     private static function buildTree($categories, $parentId = 0): array
     {
         $tree = [];
-        
+
         foreach ($categories as $category) {
             if ($category->parent_id == $parentId) {
                 $category->children_tree = self::buildTree($categories, $category->id);
                 $tree[] = $category;
             }
         }
-        
+
         return $tree;
     }
 }

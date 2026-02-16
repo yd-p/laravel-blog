@@ -69,6 +69,43 @@ class Post extends Model
     }
 
     /**
+     * 获取文章的所有评论
+     */
+    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Comment::class)->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * 获取已批准的评论
+     */
+    public function approvedComments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Comment::class)
+            ->where('status', \App\Enums\CommentStatus::APPROVED)
+            ->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * 获取顶级评论（不包括回复）
+     */
+    public function topLevelComments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Comment::class)
+            ->whereNull('parent_id')
+            ->where('status', \App\Enums\CommentStatus::APPROVED)
+            ->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * 获取评论数量
+     */
+    public function getCommentCountAttribute(): int
+    {
+        return $this->approvedComments()->count();
+    }
+
+    /**
      * 获取状态文本
      */
     public function getStatusTextAttribute(): string

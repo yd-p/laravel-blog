@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Posts\Schemas;
 
+use CodeWithDennis\FilamentSelectTree\SelectTree;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -16,56 +17,61 @@ class PostForm
     {
         return $schema
             ->components([
-                Select::make('category_id')
-                    ->label('文章分类')
-                    ->relationship('category', 'name')
-                    ->required()
-                    ->placeholder('请选择文章所属分类'),
+                Tabs::make()->tabs([
+                    Tabs\Tab::make('内容设置')->schema([
+                        SelectTree::make('category_id')
+                            ->label('父分类')
+                            ->relationship('parent', 'name', 'category_id')
+                            ->placeholder('请选择文章所属分类')
+                            ->withCount()
+                            ->searchable()
+                            ->defaultOpenLevel(99),
+                        TextInput::make('title')
+                            ->label('文章标题')
+                            ->required()
+                            ->placeholder('请输入文章标题'),
 
-                TextInput::make('title')
-                    ->label('文章标题')
-                    ->required()
-                    ->placeholder('请输入文章标题'),
+                        TextInput::make('slug')
+                            ->label('文章别名')
+                            ->required()
+                            ->placeholder('请输入文章别名（英文/数字/横杠，用于URL）'),
 
-                TextInput::make('slug')
-                    ->label('文章别名')
-                    ->required()
-                    ->placeholder('请输入文章别名（英文/数字/横杠，用于URL）'),
+                        Textarea::make('excerpt')
+                            ->label('文章摘要')
+                            ->columnSpanFull()
+                            ->placeholder('请输入文章简短摘要（选填）'),
 
-                Textarea::make('excerpt')
-                    ->label('文章摘要')
-                    ->columnSpanFull()
-                    ->placeholder('请输入文章简短摘要（选填）'),
+                        RichEditor::make('content')
+                            ->label('文章内容')
+                            ->required()
+                            ->columnSpanFull()
+                            ->placeholder('请输入文章正文内容'),
 
-                RichEditor::make('content')
-                    ->label('文章内容')
-                    ->required()
-                    ->columnSpanFull()
-                    ->placeholder('请输入文章正文内容'),
+                        TextInput::make('thumbnail')
+                            ->label('缩略图URL')
+                            ->placeholder('请输入文章缩略图的完整URL（选填）'),
 
-                TextInput::make('thumbnail')
-                    ->label('缩略图URL')
-                    ->placeholder('请输入文章缩略图的完整URL（选填）'),
+                        TextInput::make('status')
+                            ->label('文章状态')
+                            ->required()
+                            ->numeric()
+                            ->default(1)
+                            ->helperText('1=发布，0=草稿')
+                            ->placeholder('请输入1（发布）或0（草稿）'),
 
-                TextInput::make('status')
-                    ->label('文章状态')
-                    ->required()
-                    ->numeric()
-                    ->default(1)
-                    ->helperText('1=发布，0=草稿')
-                    ->placeholder('请输入1（发布）或0（草稿）'),
+                        DateTimePicker::make('published_at')
+                            ->label('发布时间')
+                            ->placeholder('请选择文章发布时间（选填）')
+                            ->native(false),
+                        TextInput::make('view_count')
+                            ->label('浏览次数')
+                            ->required()
+                            ->numeric()
+                            ->default(0)
+                            ->placeholder('初始浏览次数，默认0'),
+                    ])
+                ]),
 
-                DateTimePicker::make('published_at')
-                    ->label('发布时间')
-                    ->placeholder('请选择文章发布时间（选填）')
-                    ->native(false),
-
-                TextInput::make('view_count')
-                    ->label('浏览次数')
-                    ->required()
-                    ->numeric()
-                    ->default(0)
-                    ->placeholder('初始浏览次数，默认0'),
 
                 Tabs::make()->tabs([
                     Tabs\Tab::make('seo设置')->schema([

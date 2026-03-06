@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\PostStatus;
-use App\Models\Concerns\HasMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,7 +12,7 @@ use Illuminate\Support\Str;
 
 class Post extends Model
 {
-    use HasFactory, SoftDeletes, HasMedia;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'category_id',
@@ -121,7 +120,7 @@ class Post extends Model
         if ($value) {
             return $value;
         }
-        
+
         return Str::limit(strip_tags($this->content), 200);
     }
 
@@ -139,8 +138,8 @@ class Post extends Model
      */
     public function isPublished(): bool
     {
-        return $this->status === PostStatus::PUBLISHED && 
-               $this->published_at && 
+        return $this->status === PostStatus::PUBLISHED &&
+               $this->published_at &&
                $this->published_at->isPast();
     }
 
@@ -239,7 +238,7 @@ class Post extends Model
             if (empty($post->slug)) {
                 $post->slug = Str::slug($post->title);
             }
-            
+
             // 确保slug唯一
             $originalSlug = $post->slug;
             $count = 1;

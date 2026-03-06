@@ -28,13 +28,12 @@ return new class extends Migration
             $table->unsignedBigInteger('author_id')->comment('作者ID');
             $table->timestamps();
             $table->softDeletes()->comment('软删除');
-            
+
             $table->index('category_id');
             $table->index('status');
             $table->index('published_at');
             $table->index('author_id');
-            
-            $table->foreign('category_id')->references('id')->on('categories');
+
             $table->foreign('author_id')->references('id')->on('users');
         });
     }

@@ -2,11 +2,9 @@
 
 namespace App\Filament\Resources\Comments;
 
-use App\Enums\CommentStatus;
 use App\Filament\Resources\Comments\Pages\CreateComment;
 use App\Filament\Resources\Comments\Pages\EditComment;
 use App\Filament\Resources\Comments\Pages\ListComments;
-use App\Filament\Resources\Comments\Pages\ViewComment;
 use App\Filament\Resources\Comments\Schemas\CommentForm;
 use App\Filament\Resources\Comments\Tables\CommentsTable;
 use App\Models\Comment;
@@ -22,17 +20,9 @@ class CommentResource extends Resource
 {
     protected static ?string $model = Comment::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChatBubbleLeftRight;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $navigationLabel = '评论管理';
-
-    protected static ?string $modelLabel = '评论';
-
-    protected static ?string $pluralModelLabel = '评论';
-
-    protected static ?string $navigationGroup = '内容管理';
-
-    protected static ?int $navigationSort = 5;
+    protected static ?string $recordTitleAttribute = 'Comment';
 
     public static function form(Schema $schema): Schema
     {
@@ -56,7 +46,6 @@ class CommentResource extends Resource
         return [
             'index' => ListComments::route('/'),
             'create' => CreateComment::route('/create'),
-            'view' => ViewComment::route('/{record}'),
             'edit' => EditComment::route('/{record}/edit'),
         ];
     }
@@ -67,15 +56,5 @@ class CommentResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
-    }
-
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::where('status', CommentStatus::PENDING)->count();
-    }
-
-    public static function getNavigationBadgeColor(): ?string
-    {
-        return 'warning';
     }
 }

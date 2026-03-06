@@ -31,7 +31,7 @@ class CommentForm
                             ->searchable()
                             ->preload()
                             ->placeholder('无（顶级评论）')
-                            ->getOptionLabelFromRecordUsing(fn ($record) => 
+                            ->getOptionLabelFromRecordUsing(fn ($record) =>
                                 substr($record->content, 0, 50) . '...'
                             ),
 

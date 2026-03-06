@@ -33,9 +33,7 @@ class CommentsTable
             ->columns([
                 ImageColumn::make('author_avatar')
                     ->label('头像')
-                    ->circular()
-                    ->size(40)
-                    ->defaultImageUrl('https://www.gravatar.com/avatar/?d=mp'),
+                    ->circular(),
 
                 TextColumn::make('author_display_name')
                     ->label('评论者')

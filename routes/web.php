@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,3 +39,21 @@ use App\Http\Controllers\Web\HomeController;
 
 // 引入后台路由
 // require __DIR__.'/admin.php';
+
+// -------------------------------------------------------------------------
+// 支付路由
+// -------------------------------------------------------------------------
+
+// 支付宝
+Route::get('/payment/alipay/{orderNo}',    [PaymentController::class, 'alipayPay'])->name('payment.alipay.pay')->middleware('auth');
+Route::get('/payment/alipay/return',       [PaymentController::class, 'alipayReturn'])->name('payment.alipay.return');
+Route::post('/payment/alipay/notify',      [PaymentController::class, 'alipayNotify'])->name('payment.alipay.notify')->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+
+// 微信
+Route::get('/payment/wechat/qrcode/{orderNo}', [PaymentController::class, 'wechatQrcode'])->name('payment.wechat.qrcode')->middleware('auth');
+Route::post('/payment/wechat/notify',          [PaymentController::class, 'wechatNotify'])->name('payment.wechat.notify')->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+
+// 通用
+Route::get('/payment/query/{orderNo}',  [PaymentController::class, 'queryStatus'])->name('payment.query')->middleware('auth');
+Route::get('/payment/success',          [PaymentController::class, 'success'])->name('payment.success')->middleware('auth');
+Route::get('/payment/pending',          [PaymentController::class, 'pending'])->name('payment.pending')->middleware('auth');

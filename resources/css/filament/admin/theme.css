@@ -3,3 +3,9 @@
 @source '../../../../app/Filament/**/*';
 @source '../../../../resources/views/filament/**/*';
 
+/* 文章创建/编辑页面减少左右内边距，让表单区域更宽 */
+.fi-main:has(.fi-resource-create-record-page.fi-resource-posts),
+.fi-main:has(.fi-resource-edit-record-page.fi-resource-posts) {
+    padding-inline: calc(var(--spacing) * 2);
+}
+

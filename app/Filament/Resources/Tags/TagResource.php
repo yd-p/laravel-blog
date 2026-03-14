@@ -20,6 +20,16 @@ class TagResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    protected static ?string $navigationLabel = '标签管理';
+
+    protected static ?string $modelLabel = '标签';
+
+    protected static ?string $pluralModelLabel = '标签';
+
+    protected static string|\UnitEnum|null $navigationGroup = '内容管理';
+
+    protected static ?int $navigationSort = 3;
+
     protected static ?string $recordTitleAttribute = 'Tag';
 
     public static function form(Schema $schema): Schema

@@ -16,7 +16,11 @@ class Plugins extends Page
     use HasPageShield;
 
     protected string $view = 'filament.pages.plugins';
-    protected static ?string $navigationLabel = '插件';
+    protected static ?string $navigationLabel = '插件管理';
+
+    protected static string|\UnitEnum|null $navigationGroup = '系统设置';
+
+    protected static ?int $navigationSort = 30;
 
     public array $plugins = [];
 

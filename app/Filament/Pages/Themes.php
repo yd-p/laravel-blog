@@ -28,7 +28,11 @@ class Themes extends Page implements HasForms
 
     protected string $view = 'filament.pages.themes';
 
-    protected static ?string $navigationLabel = '主题';
+    protected static ?string $navigationLabel = '主题管理';
+
+    protected static string|\UnitEnum|null $navigationGroup = '系统设置';
+
+    protected static ?int $navigationSort = 31;
 
     public ?array $formData = [];
 

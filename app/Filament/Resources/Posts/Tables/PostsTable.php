@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Posts\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -53,16 +54,6 @@ class PostsTable
                     ->numeric()
                     ->sortable(),
 
-                TextColumn::make('seo_title')
-                    ->label('SEO标题')
-                    ->searchable()
-                    ->placeholder('未设置'),
-
-                TextColumn::make('seo_keywords')
-                    ->label('SEO关键词')
-                    ->searchable()
-                    ->placeholder('未设置'),
-
                 TextColumn::make('author.name')
                     ->label('文章作者')
                     ->searchable()
@@ -73,17 +64,22 @@ class PostsTable
                     ->label('显示已删除文章'),
             ])
             ->recordActions([
-                EditAction::make()
-                    ->label('编辑'),
+                Action::make('preview')
+                    ->label('预览')
+                    ->icon('heroicon-o-eye')
+                    ->color('info')
+                    ->modalHeading(fn ($record) => $record->title)
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('关闭')
+                    ->modalContent(fn ($record) => view('filament.modals.post-preview', ['record' => $record])),
+
+                EditAction::make()->label('编辑'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make()
-                        ->label('删除'),
-                    ForceDeleteBulkAction::make()
-                        ->label('强制删除'),
-                    RestoreBulkAction::make()
-                        ->label('恢复'),
+                    DeleteBulkAction::make()->label('删除'),
+                    ForceDeleteBulkAction::make()->label('强制删除'),
+                    RestoreBulkAction::make()->label('恢复'),
                 ])->label('批量操作'),
             ]);
     }

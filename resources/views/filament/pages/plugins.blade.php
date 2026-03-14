@@ -81,6 +81,17 @@
                                 <x-filament::icon icon="heroicon-o-check-circle" style="width:1rem;height:1rem;" />
                                 <span>运行中</span>
                             </div>
+                            @if(!empty($plugin['settings_page']))
+                                <a
+                                    href="{{ filament()->getPanel('admin')->getUrl() }}/{{ $plugin['settings_page'] }}"
+                                    style="flex:1;display:flex;align-items:center;justify-content:center;gap:0.375rem;background:#fff;color:rgb(79 70 229);border:1px solid rgb(199 210 254);border-radius:0.5rem;padding:0.5rem;font-size:0.8125rem;font-weight:500;cursor:pointer;text-decoration:none;transition:background .15s;"
+                                    onmouseover="this.style.background='rgb(238 242 255)'"
+                                    onmouseout="this.style.background='#fff'"
+                                >
+                                    <x-filament::icon icon="heroicon-o-cog-6-tooth" style="width:1rem;height:1rem;" />
+                                    <span>配置</span>
+                                </a>
+                            @endif
                             <button
                                 wire:click="mountAction('disablePluginAction', {{ json_encode(['folder' => $pluginFolder, 'name' => $plugin['name']]) }})"
                                 style="flex:1;display:flex;align-items:center;justify-content:center;gap:0.375rem;background:#fff;color:rgb(239 68 68);border:1px solid rgb(254 202 202);border-radius:0.5rem;padding:0.5rem;font-size:0.8125rem;font-weight:500;cursor:pointer;transition:background .15s;"

@@ -38,14 +38,9 @@ class PostsTable
 
                 TextColumn::make('status')
                     ->label('文章状态')
-                    ->numeric()
-                    ->sortable()
-                    ->formatStateUsing(function ($state) {
-                        return $state == 1 ? '发布' : '草稿';
-                    })
-                    ->color(function ($state) {
-                        return $state == 1 ? 'success' : 'warning';
-                    }),
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => $state->label())
+                    ->color(fn ($state) => $state->color()),
 
                 TextColumn::make('published_at')
                     ->label('发布时间')
@@ -72,24 +67,6 @@ class PostsTable
                     ->label('文章作者')
                     ->searchable()
                     ->placeholder('未知作者'),
-
-                TextColumn::make('created_at')
-                    ->label('创建时间')
-                    ->dateTime('Y-m-d H:i:s')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-
-                TextColumn::make('updated_at')
-                    ->label('更新时间')
-                    ->dateTime('Y-m-d H:i:s')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-
-                TextColumn::make('deleted_at')
-                    ->label('删除时间')
-                    ->dateTime('Y-m-d H:i:s')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 TrashedFilter::make()

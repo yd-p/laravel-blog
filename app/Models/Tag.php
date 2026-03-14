@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PostStatus;
 use App\Enums\TagStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -46,7 +47,7 @@ class Tag extends Model
     public function publishedPosts(): BelongsToMany
     {
         return $this->posts()
-            ->where('status', Post::STATUS_PUBLISHED)
+            ->where('status', PostStatus::PUBLISHED)
             ->whereNotNull('published_at')
             ->where('published_at', '<=', now());
     }

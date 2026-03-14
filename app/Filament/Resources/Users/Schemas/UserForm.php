@@ -29,6 +29,14 @@ class UserForm
                     ->preload()
                     ->searchable(),
 
+                Select::make('locale')
+                    ->label('界面语言')
+                    ->options([
+                        'zh_CN' => '中文',
+                        'en'    => 'English',
+                    ])
+                    ->placeholder('跟随系统默认'),
+
             ]);
     }
 }

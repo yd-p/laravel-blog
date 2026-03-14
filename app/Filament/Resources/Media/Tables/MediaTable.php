@@ -104,12 +104,6 @@ class MediaTable
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
-
-                TextColumn::make('created_at')
-                    ->label('上传时间')
-                    ->dateTime('Y-m-d H:i')
-                    ->sortable()
-                    ->toggleable(),
             ])
             ->filters([
                 SelectFilter::make('type')

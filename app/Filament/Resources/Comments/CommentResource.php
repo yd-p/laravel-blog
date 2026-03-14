@@ -30,8 +30,6 @@ class CommentResource extends Resource
 
     protected static ?string $pluralModelLabel = '评论';
 
-    protected static ?string $navigationGroup = '内容管理';
-
     protected static ?int $navigationSort = 5;
 
     public static function form(Schema $schema): Schema

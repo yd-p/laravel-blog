@@ -30,17 +30,38 @@ class MediaForm
                             ->visibility('public')
                             ->downloadable()
                             ->openable()
-                            ->image()
-                            ->imageEditor()
-                            ->imageEditorAspectRatios([
-                                null,
-                                '16:9',
-                                '4:3',
-                                '1:1',
-                            ])
                             ->acceptedFileTypes(['image/*', 'video/*', 'audio/*', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
                             ->maxSize(10240) // 10MB
                             ->required()
+                            ->afterStateUpdated(function ($state, callable $set, $livewire) {
+                                if (!$state) {
+                                    return;
+                                }
+                                
+                                // 获取上传的文件
+                                $file = is_array($state) ? $state[0] ?? null : $state;
+                                
+                                if ($file instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
+                                    // 设置文件名
+                                    $set('file_name', $file->getClientOriginalName());
+                                    $set('mime_type', $file->getMimeType());
+                                    $set('size', $file->getSize());
+                                    $set('disk', 'public');
+                                    
+                                    // 如果是图片，获取尺寸
+                                    if (str_starts_with($file->getMimeType(), 'image/')) {
+                                        try {
+                                            $imageSize = getimagesize($file->getRealPath());
+                                            if ($imageSize) {
+                                                $set('width', $imageSize[0]);
+                                                $set('height', $imageSize[1]);
+                                            }
+                                        } catch (\Exception $e) {
+                                            // 忽略错误
+                                        }
+                                    }
+                                }
+                            })
                             ->columnSpanFull(),
 
                         Select::make('collection_name')

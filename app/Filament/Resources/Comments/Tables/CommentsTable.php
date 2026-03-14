@@ -72,12 +72,6 @@ class CommentsTable
                     ->color('info')
                     ->sortable(),
 
-                TextColumn::make('created_at')
-                    ->label('评论时间')
-                    ->dateTime('Y-m-d H:i')
-                    ->sortable()
-                    ->toggleable(),
-
                 TextColumn::make('author_ip')
                     ->label('IP')
                     ->toggleable(isToggledHiddenByDefault: true),

@@ -26,3 +26,7 @@ Thumbs.db
 # Development scripts and tools
 /dev/*
 !/dev/.gitkeep
+
+# Test files
+test-*.php
+*_TEST_GUIDE.md

@@ -49,24 +49,6 @@ class CategoriesTable
                 ToggleColumn::make('status')
                     ->label('状态')
                     ->sortable(),
-
-                TextColumn::make('created_at')
-                    ->label('创建时间')
-                    ->dateTime('Y-m-d H:i:s')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-
-                TextColumn::make('updated_at')
-                    ->label('更新时间')
-                    ->dateTime('Y-m-d H:i:s')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-
-                TextColumn::make('deleted_at')
-                    ->label('删除时间')
-                    ->dateTime('Y-m-d H:i:s')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 TrashedFilter::make()

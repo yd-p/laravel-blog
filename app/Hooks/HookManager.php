@@ -426,9 +426,14 @@ class HookManager
             return;
         }
         
-        $cached = Cache::get($this->cachePrefix . 'registered');
-        if (is_array($cached)) {
-            $this->hooks = $cached;
+        try {
+            $cached = Cache::get($this->cachePrefix . 'registered');
+            if (is_array($cached)) {
+                $this->hooks = $cached;
+            }
+        } catch (\Exception $e) {
+            // 如果缓存不可用（例如数据库未迁移），静默失败
+            return;
         }
     }
 
@@ -449,7 +454,11 @@ class HookManager
      */
     public function clearCache(): void
     {
-        Cache::forget($this->cachePrefix . 'registered');
+        try {
+            Cache::forget($this->cachePrefix . 'registered');
+        } catch (\Exception $e) {
+            // 如果缓存不可用，静默失败
+        }
         $this->hooks = [];
     }
 

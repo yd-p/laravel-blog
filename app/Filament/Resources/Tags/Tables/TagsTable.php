@@ -39,26 +39,9 @@ class TagsTable
 
                 TextColumn::make('status')
                     ->label('标签状态')
-                    ->numeric()
-                    ->sortable()
-                    ->formatStateUsing(function ($state) {
-                        return $state == 1 ? '启用' : '禁用';
-                    })
-                    ->color(function ($state) {
-                        return $state == 1 ? 'success' : 'danger';
-                    }),
-
-                TextColumn::make('created_at')
-                    ->label('创建时间')
-                    ->dateTime('Y-m-d H:i:s')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-
-                TextColumn::make('updated_at')
-                    ->label('更新时间')
-                    ->dateTime('Y-m-d H:i:s')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => $state == 1 ? '启用' : '禁用')
+                    ->color(fn ($state) => $state == 1 ? 'success' : 'danger'),
             ])
             ->filters([
             ])

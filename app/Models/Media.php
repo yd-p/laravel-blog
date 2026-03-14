@@ -207,6 +207,50 @@ class Media extends Model
     {
         parent::boot();
 
+        // 创建时自动填充文件信息
+        static::creating(function ($media) {
+            // 设置默认磁盘
+            if (!$media->disk) {
+                $media->disk = 'public';
+            }
+            
+            // 如果 path 存在但 file_name 不存在，从 path 提取
+            if ($media->path && !$media->file_name) {
+                $media->file_name = basename($media->path);
+            }
+            
+            // 尝试获取文件信息（如果文件已经存在）
+            if ($media->path && Storage::disk($media->disk)->exists($media->path)) {
+                try {
+                    // 设置 MIME 类型
+                    if (!$media->mime_type) {
+                        $media->mime_type = Storage::disk($media->disk)->mimeType($media->path);
+                    }
+                    
+                    // 设置文件大小
+                    if (!$media->size) {
+                        $media->size = Storage::disk($media->disk)->size($media->path);
+                    }
+                    
+                    // 如果是图片，获取尺寸
+                    if (!$media->width && !$media->height && $media->mime_type && str_starts_with($media->mime_type, 'image/')) {
+                        try {
+                            $fullPath = Storage::disk($media->disk)->path($media->path);
+                            $imageSize = getimagesize($fullPath);
+                            if ($imageSize) {
+                                $media->width = $imageSize[0];
+                                $media->height = $imageSize[1];
+                            }
+                        } catch (\Exception $e) {
+                            // 忽略图片尺寸获取错误
+                        }
+                    }
+                } catch (\Exception $e) {
+                    // 如果无法获取文件信息，继续保存（文件可能还在临时目录）
+                }
+            }
+        });
+
         // 删除模型时同时删除文件
         static::deleting(function ($media) {
             if ($media->isForceDeleting()) {

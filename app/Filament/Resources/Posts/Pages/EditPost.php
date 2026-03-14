@@ -12,6 +12,11 @@ class EditPost extends EditRecord
 {
     protected static string $resource = PostResource::class;
 
+    public function getMaxContentWidth(): ?string
+    {
+        return 'full';
+    }
+
     protected function getHeaderActions(): array
     {
         return [
@@ -19,5 +24,10 @@ class EditPost extends EditRecord
             ForceDeleteAction::make(),
             RestoreAction::make(),
         ];
+    }
+
+    protected function hasFullWidthFormActions(): bool
+    {
+        return true;
     }
 }

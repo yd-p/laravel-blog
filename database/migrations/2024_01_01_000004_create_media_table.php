@@ -29,7 +29,7 @@ return new class extends Migration
             $table->unsignedInteger('height')->nullable()->comment('图片高度');
             
             // 关联字段
-            $table->morphs('model'); // model_type, model_id
+            $table->morphs('model'); // model_type, model_id (自动创建索引)
             
             // 用户关联
             $table->foreignId('uploaded_by')->nullable()->constrained('users')->nullOnDelete()->comment('上传者ID');
@@ -37,11 +37,9 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes()->comment('软删除');
             
-            // 索引
-            $table->index(['model_type', 'model_id']);
+            // 额外索引
             $table->index('collection_name');
             $table->index('mime_type');
-            $table->index('uploaded_by');
         });
     }
 

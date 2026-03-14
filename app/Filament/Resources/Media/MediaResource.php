@@ -29,8 +29,6 @@ class MediaResource extends Resource
 
     protected static ?string $pluralModelLabel = '媒体库';
 
-    protected static ?string $navigationGroup = '内容管理';
-
     protected static ?int $navigationSort = 4;
 
     public static function form(Schema $schema): Schema
@@ -78,11 +76,11 @@ class MediaResource extends Resource
         }
 
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
-        
+
         for ($i = 0; $bytes > 1024; $i++) {
             $bytes /= 1024;
         }
-        
+
         return round($bytes, 2) . ' ' . $units[$i];
     }
 

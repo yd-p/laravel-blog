@@ -1,0 +1,25 @@
+{
+    "name": "lh/social-share-plugin",
+    "description": "Social Share Plugin - 社交分享插件",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Plugins\\SocialShare\\": "app/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Plugins\\SocialShare\\Providers\\SocialShareServiceProvider"
+            ]
+        },
+        "hooks": {
+            "plugin.enabling": "Plugins\\SocialShare\\Hooks\\SocialShareHooks@onEnabling",
+            "plugin.enabled": "Plugins\\SocialShare\\Hooks\\SocialShareHooks@onEnabled",
+            "plugin.disabling": "Plugins\\SocialShare\\Hooks\\SocialShareHooks@onDisabling",
+            "plugin.disabled": "Plugins\\SocialShare\\Hooks\\SocialShareHooks@onDisabled",
+            "plugin.installed": "Plugins\\SocialShare\\Hooks\\SocialShareHooks@onInstalled"
+        }
+    },
+    "require": {}
+}

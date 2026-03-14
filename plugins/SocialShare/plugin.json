@@ -1,0 +1,18 @@
+{
+    "name": "SocialShare",
+    "folder": "SocialShare",
+    "version": "1.3.2",
+    "description": "一键分享到微信、微博、Twitter、Facebook 等主流社交平台。",
+    "author": {
+        "name": "Share Team",
+        "url": "https://example.com"
+    },
+    "category": "social",
+    "tags": ["分享", "社交", "微信"],
+    "requires": ">=1.0.0",
+    "homepage": "",
+    "download_url": "",
+    "price": 0,
+    "changelog": "v1.3.2\n- 修复微信分享兼容性\nv1.0.0\n- 初始版本",
+    "settings_page": "social-share-settings"
+}

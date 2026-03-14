@@ -151,6 +151,57 @@ $h3 = 'font-size:15px;font-weight:600;color:#111827;margin:0 0 16px;display:flex
     </div>
 </div>
 
+{{-- AI 配置 --}}
+<div style="{{ $card }}">
+    <h3 style="{{ $h3 }}">🤖 AI 配置</h3>
+
+    <div style="margin-bottom:16px;">
+        <label style="{{ $label }}">默认 AI 提供商</label>
+        <select wire:model.live="ai_provider" style="{{ $input }}max-width:200px;">
+            <option value="doubao">豆包（字节跳动）</option>
+            <option value="openai">OpenAI / 兼容接口</option>
+        </select>
+    </div>
+
+    {{-- 豆包配置 --}}
+    <div style="padding:16px;background:#fafafa;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:16px;">
+        <p style="font-size:13px;font-weight:600;color:#6b7280;margin:0 0 12px;">🫘 豆包（Doubao）</p>
+        <div style="{{ $grid2 }}">
+            <div>
+                <label style="{{ $label }}">API Key</label>
+                <input type="password" wire:model="doubao_api_key" placeholder="ark-xxxxxxxxxxxxxxxx" style="{{ $input }}">
+            </div>
+            <div>
+                <label style="{{ $label }}">模型 ID <span style="color:#9ca3af;font-weight:400;">（endpoint ID）</span></label>
+                <input type="text" wire:model="doubao_model" placeholder="doubao-pro-32k" style="{{ $input }}">
+            </div>
+            <div style="grid-column:span 2;">
+                <label style="{{ $label }}">润文 Prompt</label>
+                <textarea wire:model="doubao_polish_prompt" rows="3" style="{{ $input }}resize:vertical;"></textarea>
+            </div>
+        </div>
+    </div>
+
+    {{-- OpenAI 配置 --}}
+    <div style="padding:16px;background:#fafafa;border:1px solid #e5e7eb;border-radius:8px;">
+        <p style="font-size:13px;font-weight:600;color:#6b7280;margin:0 0 12px;">🔮 OpenAI / 兼容接口</p>
+        <div style="{{ $grid3 }}">
+            <div>
+                <label style="{{ $label }}">API Key</label>
+                <input type="password" wire:model="openai_api_key" placeholder="sk-xxxxxxxx" style="{{ $input }}">
+            </div>
+            <div>
+                <label style="{{ $label }}">模型</label>
+                <input type="text" wire:model="openai_model" placeholder="gpt-4o-mini" style="{{ $input }}">
+            </div>
+            <div>
+                <label style="{{ $label }}">Base URL <span style="color:#9ca3af;font-weight:400;">（自定义代理）</span></label>
+                <input type="url" wire:model="openai_base_url" placeholder="https://api.openai.com/v1" style="{{ $input }}">
+            </div>
+        </div>
+    </div>
+</div>
+
 {{-- 底部保存 --}}
 <div style="display:flex;justify-content:flex-end;padding-bottom:8px;">
     <button type="submit" style="padding:10px 28px;background:#6366f1;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;">

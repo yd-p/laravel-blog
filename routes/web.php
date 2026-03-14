@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Admin\AiPolishController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +40,13 @@ use App\Http\Controllers\PaymentController;
 
 // 引入后台路由
 // require __DIR__.'/admin.php';
+
+// -------------------------------------------------------------------------
+// AI 润文接口
+// -------------------------------------------------------------------------
+Route::post('/admin/ai/polish', [AiPolishController::class, 'polish'])
+    ->name('admin.ai.polish')
+    ->middleware('auth');
 
 // -------------------------------------------------------------------------
 // 支付路由

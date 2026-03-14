@@ -46,6 +46,15 @@ class SiteSettings extends Page
     public string $contact_phone = '';
     public string $contact_address = '';
 
+    // AI 配置
+    public string $ai_provider = 'doubao';
+    public string $doubao_api_key = '';
+    public string $doubao_model = 'doubao-pro-32k';
+    public string $doubao_polish_prompt = '你是一位专业的中文内容编辑，请对以下文章内容进行润色优化：保持原意不变，改善语言表达，使文章更流畅自然、专业易读。直接返回润色后的内容，不要添加任何解释。';
+    public string $openai_api_key = '';
+    public string $openai_model = 'gpt-4o-mini';
+    public string $openai_base_url = 'https://api.openai.com/v1';
+
     public function getView(): string
     {
         return 'filament.pages.site-settings';
@@ -61,6 +70,8 @@ class SiteSettings extends Page
             'google_search_console', 'baidu_search_console',
             'social_weibo', 'social_wechat_oa', 'social_twitter', 'social_github',
             'contact_email', 'contact_phone', 'contact_address',
+            'ai_provider', 'doubao_api_key', 'doubao_model', 'doubao_polish_prompt',
+            'openai_api_key', 'openai_model', 'openai_base_url',
         ];
 
         foreach ($keys as $key) {
@@ -97,6 +108,13 @@ class SiteSettings extends Page
             'contact_email'          => $this->contact_email,
             'contact_phone'          => $this->contact_phone,
             'contact_address'        => $this->contact_address,
+            'ai_provider'            => $this->ai_provider,
+            'doubao_api_key'         => $this->doubao_api_key,
+            'doubao_model'           => $this->doubao_model,
+            'doubao_polish_prompt'   => $this->doubao_polish_prompt,
+            'openai_api_key'         => $this->openai_api_key,
+            'openai_model'           => $this->openai_model,
+            'openai_base_url'        => $this->openai_base_url,
         ]);
 
         Notification::make()->title('设置已保存')->success()->send();

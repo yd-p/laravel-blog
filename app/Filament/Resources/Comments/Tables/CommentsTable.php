@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Comments\Tables;
 
 use App\Enums\CommentStatus;
 use App\Filament\Resources\Comments\CommentResource;
+use App\Filament\Resources\Posts\PostResource;
 use App\Models\Comment;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
@@ -55,8 +56,10 @@ class CommentsTable
                     ->searchable()
                     ->sortable()
                     ->limit(30)
-                    ->url(fn (Comment $record) => $record->post ? route('posts.show', $record->post) : null)
-                    ->openUrlInNewTab(),
+                    ->url(fn (Comment $record) => $record->post
+                        ? \App\Filament\Resources\Posts\PostResource::getUrl('edit', ['record' => $record->post_id])
+                        : null
+                    ),
 
                 TextColumn::make('status')
                     ->label('状态')

@@ -2,12 +2,15 @@
 
 namespace App\Filament\Resources\Posts\Tables;
 
+use App\Enums\PostStatus;
+use App\Models\Post;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
@@ -64,6 +67,29 @@ class PostsTable
                     ->label('显示已删除文章'),
             ])
             ->recordActions([
+                Action::make('publish')
+                    ->label('发布')
+                    ->icon('heroicon-o-rocket-launch')
+                    ->color('success')
+                    ->visible(fn (Post $record) => $record->status === PostStatus::DRAFT)
+                    ->action(function (Post $record) {
+                        $record->update([
+                            'status' => PostStatus::PUBLISHED,
+                            'published_at' => $record->published_at ?? now(),
+                        ]);
+                        Notification::make()->title('文章已发布')->success()->send();
+                    }),
+
+                Action::make('unpublish')
+                    ->label('撤回')
+                    ->icon('heroicon-o-arrow-uturn-left')
+                    ->color('warning')
+                    ->visible(fn (Post $record) => $record->status === PostStatus::PUBLISHED)
+                    ->action(function (Post $record) {
+                        $record->update(['status' => PostStatus::DRAFT]);
+                        Notification::make()->title('已撤回为草稿')->warning()->send();
+                    }),
+
                 Action::make('preview')
                     ->label('预览')
                     ->icon('heroicon-o-eye')
